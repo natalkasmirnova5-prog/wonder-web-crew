@@ -745,6 +745,9 @@ function ExamplesGrid({ items }: { items: ExampleItem[] }) {
                 loop
                 playsInline
                 preload="metadata"
+                onLoadedMetadata={(e) => {
+                  (e.currentTarget as HTMLVideoElement).volume = 0.25;
+                }}
                 onPlay={() => duckMusic(true)}
                 onPause={() => duckMusic(false)}
                 onEnded={() => duckMusic(false)}
