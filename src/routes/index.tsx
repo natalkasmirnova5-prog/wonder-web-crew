@@ -64,7 +64,7 @@ export const Route = createFileRoute("/")({
 
 type ExampleItem =
   | { kind: "video"; src: string; poster?: string; caption: string }
-  | { kind: "image"; src: string; caption: string; motion?: string };
+  | { kind: "image"; src: string; caption: string; motion?: string; decor?: "castle" | "space" | "paint" };
 
 type Block = {
   id: string;
@@ -266,19 +266,22 @@ const BLOCKS: Block[] = [
         kind: "image",
         src: imgRobotArtist,
         caption: "Робот-художник рисует мечту",
-        motion: "animate-wobble",
+        motion: "animate-paint",
+        decor: "paint",
       },
       {
         kind: "image",
         src: imgCatSpace,
         caption: "Котик-космонавт в путешествии",
-        motion: "animate-float",
+        motion: "animate-orbit",
+        decor: "space",
       },
       {
         kind: "image",
         src: imgCastle,
         caption: "Волшебный замок оживает",
         motion: "animate-float-2",
+        decor: "castle",
       },
     ],
   },
@@ -810,7 +813,7 @@ function ExampleCard({
   return <ExampleCardInner item={item} autoLoop={autoLoop} volume={volume} muted={muted} onToggleMute={onToggleMute} />;
 }
 
-function AnimatedImage({ src, alt, motion }: { src: string; alt: string; motion?: string }) {
+function AnimatedImage({ src, alt, motion, decor }: { src: string; alt: string; motion?: string; decor?: "castle" | "space" | "paint" }) {
   const ref = useRef<HTMLImageElement | null>(null);
   const [boop, setBoop] = useState(0);
   const [visible, setVisible] = useState(false);
@@ -846,6 +849,29 @@ function AnimatedImage({ src, alt, motion }: { src: string; alt: string; motion?
         loading="lazy"
         className={`h-full w-full object-cover ${visible ? "opacity-100" : "opacity-0"} ${visible && motion ? motion : ""} ${visible ? "animate-pop" : ""}`}
       />
+      {visible && decor === "castle" && (
+        <div className="pointer-events-none absolute inset-0 overflow-hidden" aria-hidden>
+          <span className="absolute text-3xl animate-cloud-a" style={{ top: "12%", left: "-10%" }}>☁️</span>
+          <span className="absolute text-2xl animate-cloud-b" style={{ top: "28%", left: "-10%" }}>☁️</span>
+          <span className="absolute text-xl animate-bird-a" style={{ top: "20%", left: "-10%" }}>🐦</span>
+          <span className="absolute text-lg animate-bird-b" style={{ top: "38%", left: "-10%" }}>🕊️</span>
+        </div>
+      )}
+      {visible && decor === "space" && (
+        <div className="pointer-events-none absolute inset-0 overflow-hidden" aria-hidden>
+          <span className="absolute text-lg animate-twinkle" style={{ top: "15%", left: "18%" }}>✨</span>
+          <span className="absolute text-xl animate-twinkle-2" style={{ top: "30%", right: "15%" }}>⭐</span>
+          <span className="absolute text-base animate-twinkle" style={{ bottom: "20%", left: "25%" }}>✨</span>
+          <span className="absolute text-lg animate-twinkle-2" style={{ bottom: "30%", right: "20%" }}>💫</span>
+        </div>
+      )}
+      {visible && decor === "paint" && (
+        <div className="pointer-events-none absolute inset-0 overflow-hidden" aria-hidden>
+          <span className="absolute text-xl animate-paint-dot" style={{ top: "25%", right: "20%" }}>🎨</span>
+          <span className="absolute text-lg animate-paint-dot-2" style={{ top: "45%", right: "30%" }}>🖌️</span>
+          <span className="absolute text-base animate-twinkle" style={{ bottom: "25%", left: "22%" }}>✨</span>
+        </div>
+      )}
     </button>
   );
 }
@@ -905,7 +931,7 @@ function ExampleCardInner({
         style={{ aspectRatio: "4 / 3" }}
       >
         {item.kind === "image" ? (
-          <AnimatedImage src={item.src} alt={item.caption} motion={item.motion} />
+          <AnimatedImage src={item.src} alt={item.caption} motion={item.motion} decor={item.decor} />
         ) : (
           <>
             <video

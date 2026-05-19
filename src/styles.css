@@ -260,6 +260,51 @@
 .animate-wingflap-l { animation: wingflap-left  1.4s ease-in-out infinite; transform-origin: 50% 85%; }
 .animate-wingflap-r { animation: wingflap-right 1.4s ease-in-out infinite; transform-origin: 50% 85%; }
 
+@keyframes paint-stroke {
+  0%, 100% { transform: rotate(-4deg) translateX(-2px); }
+  25%      { transform: rotate(3deg)  translateX(3px); }
+  50%      { transform: rotate(-2deg) translateX(-3px); }
+  75%      { transform: rotate(4deg)  translateX(2px); }
+}
+@keyframes orbit-float {
+  0%, 100% { transform: translate(0, 0) rotate(-3deg); }
+  25%      { transform: translate(8px, -10px) rotate(2deg); }
+  50%      { transform: translate(-6px, -16px) rotate(4deg); }
+  75%      { transform: translate(-10px, -6px) rotate(-2deg); }
+}
+@keyframes cloud-drift {
+  0%   { transform: translateX(0); opacity: 0; }
+  10%  { opacity: 0.95; }
+  90%  { opacity: 0.95; }
+  100% { transform: translateX(140%); opacity: 0; }
+}
+@keyframes bird-fly {
+  0%   { transform: translate(0, 0) scale(1); opacity: 0; }
+  10%  { opacity: 1; }
+  50%  { transform: translate(60%, -14px) scale(1.05); }
+  90%  { opacity: 1; }
+  100% { transform: translate(140%, 6px) scale(0.95); opacity: 0; }
+}
+@keyframes twinkle {
+  0%, 100% { transform: scale(0.7); opacity: 0.3; }
+  50%      { transform: scale(1.15); opacity: 1; }
+}
+@keyframes paint-dot-pop {
+  0%, 100% { transform: scale(0.9) rotate(-6deg); opacity: 0.8; }
+  50%      { transform: scale(1.15) rotate(8deg); opacity: 1; }
+}
+
+.animate-paint     { animation: paint-stroke 1.6s ease-in-out infinite; transform-origin: 50% 85%; }
+.animate-orbit     { animation: orbit-float 6.5s ease-in-out infinite; }
+.animate-cloud-a   { animation: cloud-drift 14s linear infinite; }
+.animate-cloud-b   { animation: cloud-drift 18s linear infinite; animation-delay: -7s; }
+.animate-bird-a    { animation: bird-fly 9s ease-in-out infinite; }
+.animate-bird-b    { animation: bird-fly 11s ease-in-out infinite; animation-delay: -4s; }
+.animate-twinkle   { animation: twinkle 2.4s ease-in-out infinite; }
+.animate-twinkle-2 { animation: twinkle 3.2s ease-in-out infinite; animation-delay: -1s; }
+.animate-paint-dot { animation: paint-dot-pop 2.2s ease-in-out infinite; }
+.animate-paint-dot-2 { animation: paint-dot-pop 2.8s ease-in-out infinite; animation-delay: -1s; }
+
 /* Hide scrollbar but keep scroll for accessibility/overflow safety */
 .no-scrollbar { scrollbar-width: none; -ms-overflow-style: none; }
 .no-scrollbar::-webkit-scrollbar { display: none; }
