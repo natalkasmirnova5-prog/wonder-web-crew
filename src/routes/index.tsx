@@ -1,5 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import {
   Sparkles,
@@ -727,17 +727,61 @@ function PromptPractice() {
 
 function ExamplesGrid({ items }: { items: ExampleItem[] }) {
   const [autoLoop, setAutoLoop] = useState(true);
+  const [volume, setVolume] = useState(0.25);
+  const videosRef = useRef<Array<HTMLVideoElement | null>>([]);
+
+  useEffect(() => {
+    videosRef.current.forEach((v) => {
+      if (v) v.volume = volume;
+    });
+  }, [volume]);
+
+  const bump = (delta: number) =>
+    setVolume((v) => Math.min(1, Math.max(0, +(v + delta).toFixed(2))));
+
   return (
     <div className="space-y-3">
-      <label className="inline-flex cursor-pointer items-center gap-2 rounded-full bg-white/80 px-3 py-1.5 text-xs font-bold text-kid-purple shadow-sm ring-1 ring-foreground/5 sm:text-sm">
-        <input
-          type="checkbox"
-          checked={autoLoop}
-          onChange={(e) => setAutoLoop(e.target.checked)}
-          className="h-4 w-4 accent-kid-pink"
-        />
-        🔁 Автоповтор видео
-      </label>
+      <div className="flex flex-wrap items-center gap-2">
+        <label className="inline-flex cursor-pointer items-center gap-2 rounded-full bg-white/80 px-3 py-1.5 text-xs font-bold text-kid-purple shadow-sm ring-1 ring-foreground/5 sm:text-sm">
+          <input
+            type="checkbox"
+            checked={autoLoop}
+            onChange={(e) => setAutoLoop(e.target.checked)}
+            className="h-4 w-4 accent-kid-pink"
+          />
+          🔁 Автоповтор видео
+        </label>
+        <div className="inline-flex items-center gap-2 rounded-full bg-white/80 px-3 py-1.5 text-xs font-bold text-kid-purple shadow-sm ring-1 ring-foreground/5 sm:text-sm">
+          <span>🔊 Громкость</span>
+          <button
+            type="button"
+            onClick={() => bump(-0.1)}
+            aria-label="Тише"
+            className="grid h-7 w-7 place-items-center rounded-full bg-kid-purple/10 text-base font-bold text-kid-purple hover:bg-kid-purple/20 active:scale-95"
+          >
+            −
+          </button>
+          <input
+            type="range"
+            min={0}
+            max={1}
+            step={0.05}
+            value={volume}
+            onChange={(e) => setVolume(parseFloat(e.target.value))}
+            className="h-1 w-20 cursor-pointer accent-kid-pink sm:w-28"
+            aria-label="Громкость видео"
+          />
+          <button
+            type="button"
+            onClick={() => bump(0.1)}
+            aria-label="Громче"
+            className="grid h-7 w-7 place-items-center rounded-full bg-kid-purple/10 text-base font-bold text-kid-purple hover:bg-kid-purple/20 active:scale-95"
+          >
+            +
+          </button>
+          <span className="w-8 text-right tabular-nums">{Math.round(volume * 100)}%</span>
+        </div>
+      </div>
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
       {items.map((it, i) => (
         <figure
@@ -755,6 +799,10 @@ function ExamplesGrid({ items }: { items: ExampleItem[] }) {
             ) : (
               <video
                 key={autoLoop ? "loop" : "once"}
+                ref={(el) => {
+                  videosRef.current[i] = el;
+                  if (el) el.volume = volume;
+                }}
                 src={it.src}
                 poster={it.poster}
                 controls
@@ -762,7 +810,7 @@ function ExamplesGrid({ items }: { items: ExampleItem[] }) {
                 playsInline
                 preload="metadata"
                 onLoadedMetadata={(e) => {
-                  (e.currentTarget as HTMLVideoElement).volume = 0.25;
+                  (e.currentTarget as HTMLVideoElement).volume = volume;
                 }}
                 onPlay={() => duckMusic(true)}
                 onPause={() => duckMusic(false)}
