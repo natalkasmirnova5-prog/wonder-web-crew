@@ -917,6 +917,7 @@ function ExampleCardInner({
               loop={autoLoop}
               playsInline
               preload="metadata"
+              autoPlay
               muted={muted}
               onClick={togglePlay}
               onLoadedMetadata={(e) => {
@@ -936,7 +937,7 @@ function ExampleCardInner({
                 setPlaying(false);
                 duckMusic(false);
               }}
-              className="absolute inset-0 h-full w-full bg-black object-contain"
+              className="absolute inset-0 h-full w-full bg-black object-cover"
             />
             {!playing && (
               <button
