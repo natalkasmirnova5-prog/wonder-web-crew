@@ -392,12 +392,12 @@ function Index() {
       <img
         src={dragonBlue}
         alt="Маленький голубой дракончик"
-        className="pointer-events-none absolute left-2 top-[58%] z-10 w-24 sm:left-6 sm:top-[40%] sm:w-36 md:w-44 animate-dance drop-shadow-2xl"
+        className="pointer-events-none absolute left-3 top-[68%] z-10 w-24 sm:left-8 sm:top-[58%] sm:w-36 md:w-44 animate-wingflap-l drop-shadow-2xl"
       />
       <img
         src={dragonPeach}
         alt="Маленький персиковый дракончик"
-        className="pointer-events-none absolute right-2 top-[60%] z-10 w-24 sm:right-6 sm:top-[42%] sm:w-36 md:w-44 animate-jiggle drop-shadow-2xl"
+        className="pointer-events-none absolute right-3 top-[70%] z-10 w-24 sm:right-8 sm:top-[60%] sm:w-36 md:w-44 animate-wingflap-r drop-shadow-2xl"
       />
 
       {/* Robots — placed lower so they never cover the title; original soft float animations */}
@@ -458,6 +458,7 @@ function Index() {
               <PlayCircle className="h-5 w-5" />
               Режим слайдов
             </button>
+            <HeroMusicToggle />
           </div>
         </header>
 
