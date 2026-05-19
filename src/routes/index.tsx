@@ -893,6 +893,16 @@ function SlideShow({
 
           <div className="mt-5 rounded-2xl bg-gradient-sky px-4 py-3 text-center">
             <p className="text-sm font-bold text-kid-purple sm:text-base">{b.outro}</p>
+            {b.id === "outro" && (
+              <a
+                href="https://chat.qwen.ai"
+                target="_blank"
+                rel="noreferrer noopener"
+                className="mt-3 inline-flex items-center gap-2 rounded-full bg-white px-5 py-2 text-sm font-extrabold text-kid-purple shadow-pop ring-2 ring-kid-pink/40 transition-transform hover:scale-105 active:scale-95 sm:text-base"
+              >
+                ✨ Открыть chat.qwen.ai →
+              </a>
+            )}
           </div>
 
           <button
