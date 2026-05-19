@@ -124,7 +124,7 @@ const BLOCKS: Block[] = [
   },
   {
     id: "prompt",
-    title: "Как правильно попросить",
+    title: "Как правильно говорить",
     emoji: "💬",
     icon: MessageCircleQuestion,
     gradient: "bg-gradient-blue",
