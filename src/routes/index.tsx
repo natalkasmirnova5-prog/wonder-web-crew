@@ -37,7 +37,7 @@ const ngCastle = { url: "/videos/ng-castle-v2.mp4" };
 const ngRobotArtist = { url: "/videos/ng-robot-artist-v2.mp4" };
 const ngDragon = { url: "/videos/ng-dragon-v2.mp4" };
 const eduWhatIsAi = { url: "/videos/edu-what-is-ai-v5.mp4" };
-const eduHowToAsk = { url: "/videos/edu-how-to-ask-v5.mp4" };
+const eduHowToAsk = { url: "/videos/edu-how-to-ask-v6.mp4" };
 const eduImage = { url: "/videos/edu-image-v5.mp4" };
 const eduVideoSite = { url: "/videos/edu-video-site-v5.mp4" };
 import {
