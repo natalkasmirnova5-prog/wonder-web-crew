@@ -17,9 +17,13 @@ import {
   X,
   PlayCircle,
   Wand2,
+  Music,
+  VolumeX,
 } from "lucide-react";
 import robot1 from "@/assets/robot1.png";
 import robot2 from "@/assets/robot2.png";
+import dragonBlue from "@/assets/dragon-blue.png";
+import dragonPeach from "@/assets/dragon-peach.png";
 import imgCatSpace from "@/assets/ex-cat-space.jpg";
 import imgCastle from "@/assets/ex-castle.jpg";
 import imgRobotArtist from "@/assets/ex-robot-artist.jpg";
@@ -28,7 +32,13 @@ import imgDragonPizza from "@/assets/ex-dragon-pizza.jpg";
 import imgIcecreamCity from "@/assets/ex-icecream-city.jpg";
 import imgRobotPuppy from "@/assets/ex-robot-puppy.jpg";
 import imgKidsAi from "@/assets/ex-kids-ai.jpg";
-import { playClick } from "@/lib/sound";
+import {
+  playClick,
+  startMusic,
+  duckMusic,
+  setMusicMuted,
+  isMusicMuted,
+} from "@/lib/sound";
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -62,9 +72,8 @@ type Block = {
   examples: ExampleItem[];
 };
 
-// Reliable public video samples (Google demo bucket — CORS-friendly, autoplay-safe)
-const V = (name: string) =>
-  `https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/${name}.mp4`;
+// Local Russian-language kids videos (with music)
+const LV = (name: string) => `/videos/${name}`;
 
 // Public website screenshot service
 const SHOT = (url: string) =>
@@ -199,10 +208,30 @@ const BLOCKS: Block[] = [
     cta: "Смотреть нейровидео",
     examplesTitle: "Нейровидео — 4 примера",
     examples: [
-      { kind: "video", src: V("BigBuckBunny"), poster: imgDragon, caption: "Мультик «Big Buck Bunny» — добрый кролик" },
-      { kind: "video", src: V("ElephantsDream"), poster: imgCastle, caption: "Анимация «Elephants Dream»" },
-      { kind: "video", src: V("ForBiggerJoyrides"), poster: imgRobotPuppy, caption: "Весёлая поездка — короткий ролик" },
-      { kind: "video", src: V("ForBiggerEscapes"), poster: imgIcecreamCity, caption: "Динамичная сценка" },
+      {
+        kind: "video",
+        src: LV("neuro-video-dragon-book.mp4"),
+        poster: LV("neuro-video-dragon-book.jpg"),
+        caption: "Дракончик и книга идей",
+      },
+      {
+        kind: "video",
+        src: LV("neuro-video-robot-painter.mp4"),
+        poster: LV("neuro-video-robot-painter.jpg"),
+        caption: "Робот-художник рисует мечту",
+      },
+      {
+        kind: "video",
+        src: LV("neuro-video-prompt-magic.mp4"),
+        poster: LV("neuro-video-prompt-magic.jpg"),
+        caption: "Магия хорошего промпта",
+      },
+      {
+        kind: "video",
+        src: LV("neuro-video-website-garden.mp4"),
+        poster: LV("neuro-video-website-garden.jpg"),
+        caption: "Сайт-сад для школьного проекта",
+      },
     ],
   },
   {
@@ -293,12 +322,16 @@ function Index() {
   // Play a cheerful click sound on any button press anywhere on the page
   const onClickCapture = (e: React.MouseEvent<HTMLDivElement>) => {
     const t = e.target as HTMLElement;
-    if (t.closest("button, [role='button'], a")) playClick();
+    if (t.closest("button, [role='button'], a")) {
+      playClick();
+      startMusic(); // user-gesture: kick off background music
+    }
   };
 
   if (slideMode) {
     return (
       <div onClickCapture={onClickCapture}>
+        <MusicPlayer />
         <SlideShow
           index={slideIdx}
           onPrev={() => setSlideIdx((i) => Math.max(i - 1, 0))}
@@ -313,6 +346,19 @@ function Index() {
   return (
     <div className="relative min-h-screen overflow-hidden" onClickCapture={onClickCapture}>
       <DecorBackground />
+      <MusicPlayer />
+
+      {/* Two cheerful Pixar-style baby dragons flapping their wings */}
+      <img
+        src={dragonBlue}
+        alt="Маленький голубой дракончик"
+        className="pointer-events-none absolute left-2 top-[58%] z-10 w-24 sm:left-6 sm:top-[40%] sm:w-36 md:w-44 animate-dance drop-shadow-2xl"
+      />
+      <img
+        src={dragonPeach}
+        alt="Маленький персиковый дракончик"
+        className="pointer-events-none absolute right-2 top-[60%] z-10 w-24 sm:right-6 sm:top-[42%] sm:w-36 md:w-44 animate-jiggle drop-shadow-2xl"
+      />
 
       {/* Robots — placed lower so they never cover the title; original soft float animations */}
       <img
@@ -588,7 +634,9 @@ function ExamplesGrid({ items }: { items: ExampleItem[] }) {
                 controls
                 playsInline
                 preload="metadata"
-                crossOrigin="anonymous"
+                onPlay={() => duckMusic(true)}
+                onPause={() => duckMusic(false)}
+                onEnded={() => duckMusic(false)}
                 className="absolute inset-0 h-full w-full object-contain bg-black"
               />
             )}
@@ -646,6 +694,28 @@ function BlockCard({
 }
 
 /* ───────────────────────────── Background decor ───────────────────────────── */
+
+function MusicPlayer() {
+  const [muted, setMuted] = useState(false);
+  useEffect(() => {
+    setMuted(isMusicMuted());
+  }, []);
+  return (
+    <button
+      onClick={() => {
+        const next = !muted;
+        setMuted(next);
+        setMusicMuted(next);
+        if (!next) startMusic();
+      }}
+      aria-label={muted ? "Включить музыку" : "Выключить музыку"}
+      title={muted ? "Включить музыку" : "Выключить музыку"}
+      className="fixed bottom-4 right-4 z-[60] inline-flex h-12 w-12 items-center justify-center rounded-full bg-white/95 text-kid-purple shadow-pop ring-2 ring-kid-pink/40 backdrop-blur transition-transform hover:scale-110 active:scale-95"
+    >
+      {muted ? <VolumeX className="h-6 w-6" /> : <Music className="h-6 w-6" />}
+    </button>
+  );
+}
 
 function DecorBackground() {
   return (
