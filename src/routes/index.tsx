@@ -16,9 +16,19 @@ import {
   ChevronRight,
   X,
   PlayCircle,
+  Wand2,
 } from "lucide-react";
 import robot1 from "@/assets/robot1.png";
 import robot2 from "@/assets/robot2.png";
+import imgCatSpace from "@/assets/ex-cat-space.jpg";
+import imgCastle from "@/assets/ex-castle.jpg";
+import imgRobotArtist from "@/assets/ex-robot-artist.jpg";
+import imgDragon from "@/assets/ex-dragon.jpg";
+import imgDragonPizza from "@/assets/ex-dragon-pizza.jpg";
+import imgIcecreamCity from "@/assets/ex-icecream-city.jpg";
+import imgRobotPuppy from "@/assets/ex-robot-puppy.jpg";
+import imgKidsAi from "@/assets/ex-kids-ai.jpg";
+import { playClick } from "@/lib/sound";
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -52,14 +62,11 @@ type Block = {
   examples: ExampleItem[];
 };
 
-// Public sample videos (Google demo bucket – stable, CORS-friendly)
+// Reliable public video samples (Google demo bucket — CORS-friendly, autoplay-safe)
 const V = (name: string) =>
   `https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/${name}.mp4`;
 
-// Picsum image with stable seed
-const P = (seed: string) => `https://picsum.photos/seed/${seed}/800/600`;
-
-// Free public website screenshot service (no auth)
+// Public website screenshot service
 const SHOT = (url: string) =>
   `https://image.thum.io/get/width/900/crop/700/noanimate/${url}`;
 
@@ -92,10 +99,10 @@ const BLOCKS: Block[] = [
     cta: "Смотри, как это работает",
     examplesTitle: "Что умеют нейросети",
     examples: [
-      { kind: "image", src: P("neuro-brain-1"), caption: "Картинки от нейросети" },
-      { kind: "image", src: P("neuro-brain-2"), caption: "Истории и сказки" },
-      { kind: "image", src: P("neuro-brain-3"), caption: "Идеи для уроков" },
-      { kind: "image", src: P("neuro-brain-4"), caption: "Помощь в творчестве" },
+      { kind: "image", src: imgKidsAi, caption: "Дети творят с нейросетью" },
+      { kind: "image", src: imgRobotArtist, caption: "Робот рисует картину" },
+      { kind: "image", src: imgCatSpace, caption: "Котёнок-астронавт на радуге" },
+      { kind: "image", src: imgDragon, caption: "Дракончик в волшебном лесу" },
     ],
   },
   {
@@ -126,10 +133,10 @@ const BLOCKS: Block[] = [
     cta: "Посмотреть примеры промптов",
     examplesTitle: "Примеры удачных промптов",
     examples: [
-      { kind: "image", src: P("prompt-1"), caption: "«Дракон-повар печёт пиццу»" },
-      { kind: "image", src: P("prompt-2"), caption: "«Котёнок-астронавт на радуге»" },
-      { kind: "image", src: P("prompt-3"), caption: "«Город из мороженого ночью»" },
-      { kind: "image", src: P("prompt-4"), caption: "«Робот играет с щенком в лего»" },
+      { kind: "image", src: imgDragonPizza, caption: "«Дракон-повар печёт пиццу»" },
+      { kind: "image", src: imgCatSpace, caption: "«Котёнок-астронавт на радуге»" },
+      { kind: "image", src: imgIcecreamCity, caption: "«Город из мороженого ночью»" },
+      { kind: "image", src: imgRobotPuppy, caption: "«Робот играет с щенком в лего»" },
     ],
   },
   {
@@ -159,10 +166,10 @@ const BLOCKS: Block[] = [
     cta: "Смотреть нейроизображения",
     examplesTitle: "Нейроизображения — 4 примера",
     examples: [
-      { kind: "image", src: P("ai-art-cat-pixar"), caption: "Котёнок в стиле Pixar" },
-      { kind: "image", src: P("ai-art-castle"), caption: "Сказочный замок на облаке" },
-      { kind: "image", src: P("ai-art-robot"), caption: "Дружелюбный робот-художник" },
-      { kind: "image", src: P("ai-art-dragon"), caption: "Дракончик и волшебный лес" },
+      { kind: "image", src: imgCatSpace, caption: "Котёнок-астронавт" },
+      { kind: "image", src: imgCastle, caption: "Сказочный замок на облаке" },
+      { kind: "image", src: imgRobotArtist, caption: "Робот-художник" },
+      { kind: "image", src: imgDragon, caption: "Дракончик в волшебном лесу" },
     ],
   },
   {
@@ -192,10 +199,10 @@ const BLOCKS: Block[] = [
     cta: "Смотреть нейровидео",
     examplesTitle: "Нейровидео — 4 примера",
     examples: [
-      { kind: "video", src: V("BigBuckBunny"), caption: "Мультфильм-нейровидео" },
-      { kind: "video", src: V("ElephantsDream"), caption: "Анимация с персонажами" },
-      { kind: "video", src: V("ForBiggerBlazes"), caption: "Короткий ролик-история" },
-      { kind: "video", src: V("ForBiggerJoyrides"), caption: "Динамичная сценка" },
+      { kind: "video", src: V("BigBuckBunny"), poster: imgDragon, caption: "Мультик «Big Buck Bunny» — добрый кролик" },
+      { kind: "video", src: V("ElephantsDream"), poster: imgCastle, caption: "Анимация «Elephants Dream»" },
+      { kind: "video", src: V("ForBiggerJoyrides"), poster: imgRobotPuppy, caption: "Весёлая поездка — короткий ролик" },
+      { kind: "video", src: V("ForBiggerEscapes"), poster: imgIcecreamCity, caption: "Динамичная сценка" },
     ],
   },
   {
@@ -225,10 +232,10 @@ const BLOCKS: Block[] = [
     cta: "Смотреть детские сайты",
     examplesTitle: "Сайты для детей — главные страницы",
     examples: [
-      { kind: "image", src: SHOT("https://pbskids.org"), caption: "PBS Kids" },
-      { kind: "image", src: SHOT("https://www.nickjr.com"), caption: "Nick Jr." },
-      { kind: "image", src: SHOT("https://www.starfall.com"), caption: "Starfall" },
-      { kind: "image", src: SHOT("https://www.coolmathgames.com"), caption: "Cool Math Games" },
+      { kind: "image", src: SHOT("https://pbskids.org"), caption: "PBS Kids — игры и мультики" },
+      { kind: "image", src: SHOT("https://www.nickjr.com"), caption: "Nick Jr. — для малышей" },
+      { kind: "image", src: SHOT("https://www.starfall.com"), caption: "Starfall — учимся читать" },
+      { kind: "image", src: SHOT("https://www.coolmathgames.com"), caption: "Cool Math Games — математика" },
     ],
   },
   {
@@ -257,10 +264,10 @@ const BLOCKS: Block[] = [
     cta: "Финальное вдохновение",
     examplesTitle: "Что ты сможешь создать",
     examples: [
-      { kind: "image", src: P("future-1"), caption: "Свою книгу с картинками" },
-      { kind: "image", src: P("future-2"), caption: "Свой мультфильм" },
-      { kind: "image", src: P("future-3"), caption: "Свою мини-игру" },
-      { kind: "image", src: P("future-4"), caption: "Свой сайт-проект" },
+      { kind: "image", src: imgKidsAi, caption: "Свою книгу с картинками" },
+      { kind: "image", src: imgCastle, caption: "Свой мультфильм-сказку" },
+      { kind: "image", src: imgRobotPuppy, caption: "Свою мини-игру" },
+      { kind: "image", src: imgIcecreamCity, caption: "Свой сайт-проект" },
     ],
   },
 ];
@@ -283,29 +290,37 @@ function Index() {
     return () => window.removeEventListener("keydown", onKey);
   }, [slideMode]);
 
+  // Play a cheerful click sound on any button press anywhere on the page
+  const onClickCapture = (e: React.MouseEvent<HTMLDivElement>) => {
+    const t = e.target as HTMLElement;
+    if (t.closest("button, [role='button'], a")) playClick();
+  };
+
   if (slideMode) {
     return (
-      <SlideShow
-        index={slideIdx}
-        onPrev={() => setSlideIdx((i) => Math.max(i - 1, 0))}
-        onNext={() => setSlideIdx((i) => Math.min(i + 1, BLOCKS.length - 1))}
-        onExit={() => setSlideMode(false)}
-        onJump={setSlideIdx}
-      />
+      <div onClickCapture={onClickCapture}>
+        <SlideShow
+          index={slideIdx}
+          onPrev={() => setSlideIdx((i) => Math.max(i - 1, 0))}
+          onNext={() => setSlideIdx((i) => Math.min(i + 1, BLOCKS.length - 1))}
+          onExit={() => setSlideMode(false)}
+          onJump={setSlideIdx}
+        />
+      </div>
     );
   }
 
   return (
-    <div className="relative min-h-screen overflow-hidden">
+    <div className="relative min-h-screen overflow-hidden" onClickCapture={onClickCapture}>
       <DecorBackground />
 
-      {/* Характеры — озорные, прыгают и крутятся */}
+      {/* Robots — placed lower so they never cover the title; original soft float animations */}
       <img
         src={robot1}
         alt="Робот-помощник"
         width={768}
         height={768}
-        className="pointer-events-none absolute left-1 top-[16%] z-10 w-24 sm:w-36 md:w-52 lg:w-64 animate-dance drop-shadow-2xl"
+        className="pointer-events-none absolute left-1 top-[44%] z-10 w-20 sm:left-2 sm:top-[26%] sm:w-32 md:w-48 lg:w-60 animate-float drop-shadow-2xl"
       />
       <img
         src={robot2}
@@ -313,31 +328,37 @@ function Index() {
         width={768}
         height={768}
         loading="lazy"
-        className="pointer-events-none absolute right-1 top-[12%] z-10 w-24 sm:w-36 md:w-52 lg:w-64 animate-jiggle drop-shadow-2xl"
+        className="pointer-events-none absolute right-1 top-[44%] z-10 w-20 sm:right-2 sm:top-[22%] sm:w-32 md:w-48 lg:w-60 animate-float-2 drop-shadow-2xl"
       />
 
       <main className="relative z-20 mx-auto max-w-7xl px-4 pb-20 pt-10 sm:px-6 lg:px-8">
         {/* Hero */}
-        <header className="mx-auto max-w-4xl text-center">
-          <div className="inline-flex items-center gap-2 rounded-full bg-white/70 px-4 py-2 backdrop-blur-sm shadow-pop animate-pop">
+        <header className="relative z-30 mx-auto max-w-4xl text-center">
+          <div className="inline-flex items-center gap-2 rounded-full bg-white/90 px-4 py-2 backdrop-blur-sm shadow-pop animate-pop">
             <Sparkles className="h-4 w-4 text-kid-pink" />
             <span className="text-sm font-bold text-kid-purple">Мастер-класс для ребят 8–10 лет</span>
             <Sparkles className="h-4 w-4 text-kid-pink" />
           </div>
 
-          <h1 className="mx-auto mt-6 max-w-3xl text-4xl leading-[1.05] sm:text-6xl md:text-7xl">
-            <span className="block bg-gradient-pink bg-clip-text text-transparent drop-shadow-sm">
-              Добро пожаловать в мир нейросетей! 🚀
-            </span>
+          {/* Solid color + strong outline so the title is always readable */}
+          <h1
+            className="mx-auto mt-6 max-w-3xl text-[2rem] leading-[1.05] text-kid-purple sm:text-6xl md:text-7xl"
+            style={{
+              WebkitTextStroke: "1px white",
+              textShadow:
+                "0 2px 0 #fff, 0 4px 0 rgba(255,255,255,0.6), 0 10px 25px rgba(120,60,200,0.35)",
+            }}
+          >
+            Добро пожаловать в мир нейросетей! 🚀
           </h1>
 
-          <p className="mx-auto mt-6 max-w-2xl text-base font-medium text-foreground/80 sm:text-xl">
+          <p className="mx-auto mt-6 max-w-2xl rounded-2xl bg-white/70 px-4 py-3 text-base font-medium text-foreground/80 backdrop-blur-sm sm:text-xl">
             Сегодня ты узнаешь, кто такие нейрокреаторы, нейровидеографы и вайб-кодеры —
             и как самому стать волшебником с помощью нейросетей ✨
           </p>
 
           <div className="mt-8 flex flex-wrap items-center justify-center gap-3">
-            <div className="inline-flex items-center gap-2 rounded-2xl bg-white/80 px-5 py-3 shadow-toy backdrop-blur-sm">
+            <div className="inline-flex items-center gap-2 rounded-2xl bg-white/90 px-5 py-3 shadow-toy backdrop-blur-sm">
               <span className="text-2xl">👇</span>
               <span className="font-bold text-kid-purple">Нажимай на кнопки!</span>
             </div>
@@ -355,7 +376,7 @@ function Index() {
         </header>
 
         {/* Blocks grid */}
-        <section className="mt-16 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+        <section className="relative z-20 mt-16 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
           {BLOCKS.map((b, i) => (
             <BlockCard key={b.id} block={b} index={i} onOpen={() => setOpenId(b.id)} />
           ))}
@@ -368,7 +389,7 @@ function Index() {
         </footer>
       </main>
 
-      {/* Block details dialog — компактнее */}
+      {/* Block details dialog */}
       <Dialog open={!!active} onOpenChange={(o) => !o && setOpenId(null)}>
         <DialogContent className="max-h-[88vh] w-[94vw] max-w-lg overflow-y-auto overflow-x-hidden border-0 bg-white/95 p-0 sm:rounded-3xl">
           {active && (
@@ -405,6 +426,9 @@ function Index() {
                     )}
                   </div>
                 ))}
+
+                {active.id === "prompt" && <PromptPractice />}
+
                 <div className="rounded-2xl bg-gradient-sky px-5 py-3 text-center">
                   <p className="text-sm font-bold text-kid-purple sm:text-base">{active.outro}</p>
                 </div>
@@ -437,6 +461,110 @@ function Index() {
   );
 }
 
+/* ─────────────────────── Interactive prompt practice ─────────────────────── */
+
+function PromptPractice() {
+  const [hero, setHero] = useState("");
+  const [place, setPlace] = useState("");
+  const [style, setStyle] = useState("в стиле Pixar");
+  const [result, setResult] = useState<string | null>(null);
+
+  const heroes = ["котёнок-астронавт", "дракончик", "робот-друг", "единорог", "пингвин-пират"];
+  const places = ["на радуге", "в волшебном лесу", "на луне", "в городе из мороженого", "под водой"];
+
+  const generate = () => {
+    const h = hero.trim() || heroes[Math.floor(Math.random() * heroes.length)];
+    const p = place.trim() || places[Math.floor(Math.random() * places.length)];
+    setResult(
+      `Нарисуй ${h}, который весело играет ${p}, ${style}, яркие краски, доброе настроение, большие глаза, мультяшный свет ✨`,
+    );
+  };
+
+  const surprise = () => {
+    setHero(heroes[Math.floor(Math.random() * heroes.length)]);
+    setPlace(places[Math.floor(Math.random() * places.length)]);
+  };
+
+  return (
+    <div className="rounded-3xl border-2 border-dashed border-kid-pink/40 bg-gradient-to-br from-white to-kid-cream p-4 sm:p-5">
+      <div className="mb-3 flex items-center gap-2">
+        <Wand2 className="h-5 w-5 text-kid-pink" />
+        <h3 className="text-lg text-kid-purple sm:text-xl">Практика: собери свой промпт!</h3>
+      </div>
+      <p className="mb-3 text-sm text-foreground/75">
+        Впиши героя и место — а мы соберём готовый волшебный промпт для нейросети.
+      </p>
+
+      <div className="grid gap-3 sm:grid-cols-2">
+        <label className="block">
+          <span className="text-xs font-bold uppercase tracking-wider text-kid-purple">Герой</span>
+          <input
+            value={hero}
+            onChange={(e) => setHero(e.target.value)}
+            placeholder="например: котёнок-астронавт"
+            className="mt-1 w-full rounded-xl border-2 border-kid-pink/30 bg-white px-3 py-2 text-sm outline-none focus:border-kid-pink"
+          />
+        </label>
+        <label className="block">
+          <span className="text-xs font-bold uppercase tracking-wider text-kid-purple">Место</span>
+          <input
+            value={place}
+            onChange={(e) => setPlace(e.target.value)}
+            placeholder="например: на радуге"
+            className="mt-1 w-full rounded-xl border-2 border-kid-blue/30 bg-white px-3 py-2 text-sm outline-none focus:border-kid-blue"
+          />
+        </label>
+      </div>
+
+      <div className="mt-3">
+        <span className="text-xs font-bold uppercase tracking-wider text-kid-purple">Стиль</span>
+        <div className="mt-1 flex flex-wrap gap-2">
+          {["в стиле Pixar", "акварель", "мультик", "комикс", "3D-игрушка"].map((s) => (
+            <button
+              key={s}
+              type="button"
+              onClick={() => setStyle(s)}
+              className={`rounded-full px-3 py-1 text-xs font-bold transition ${
+                style === s
+                  ? "bg-kid-purple text-white shadow-pop"
+                  : "bg-muted text-kid-purple hover:bg-kid-pink/20"
+              }`}
+            >
+              {s}
+            </button>
+          ))}
+        </div>
+      </div>
+
+      <div className="mt-4 flex flex-wrap gap-2">
+        <button
+          onClick={generate}
+          className="inline-flex items-center gap-2 rounded-2xl bg-gradient-candy px-5 py-2.5 text-sm font-bold text-white shadow-pop transition-transform hover:scale-105 active:scale-95"
+        >
+          <Sparkles className="h-4 w-4" /> Создать промпт
+        </button>
+        <button
+          onClick={surprise}
+          className="inline-flex items-center gap-2 rounded-2xl bg-white px-5 py-2.5 text-sm font-bold text-kid-purple shadow-pop ring-2 ring-kid-pink/30 transition-transform hover:scale-105 active:scale-95"
+        >
+          🎲 Удиви меня
+        </button>
+      </div>
+
+      {result && (
+        <div className="mt-4 animate-pop rounded-2xl bg-white p-4 ring-2 ring-kid-pink/40">
+          <div className="mb-1 text-xs font-bold uppercase tracking-wider text-kid-pink">
+            Твой промпт ✨
+          </div>
+          <p className="text-sm font-semibold text-foreground sm:text-base">«{result}»</p>
+        </div>
+      )}
+    </div>
+  );
+}
+
+/* ───────────────────────────── Examples grid ───────────────────────────── */
+
 function ExamplesGrid({ items }: { items: ExampleItem[] }) {
   return (
     <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
@@ -456,8 +584,11 @@ function ExamplesGrid({ items }: { items: ExampleItem[] }) {
             ) : (
               <video
                 src={it.src}
+                poster={it.poster}
                 controls
+                playsInline
                 preload="metadata"
+                crossOrigin="anonymous"
                 className="absolute inset-0 h-full w-full object-contain bg-black"
               />
             )}
@@ -470,6 +601,8 @@ function ExamplesGrid({ items }: { items: ExampleItem[] }) {
     </div>
   );
 }
+
+/* ───────────────────────────── Block card ───────────────────────────── */
 
 function BlockCard({
   block,
@@ -512,6 +645,8 @@ function BlockCard({
   );
 }
 
+/* ───────────────────────────── Background decor ───────────────────────────── */
+
 function DecorBackground() {
   return (
     <div aria-hidden className="pointer-events-none absolute inset-0 z-0 overflow-hidden">
@@ -527,6 +662,8 @@ function DecorBackground() {
     </div>
   );
 }
+
+/* ───────────────────────────── Slide show ───────────────────────────── */
 
 function SlideShow({
   index,
@@ -549,7 +686,6 @@ function SlideShow({
     <div className="fixed inset-0 z-50 flex flex-col bg-gradient-sky">
       <DecorBackground />
 
-      {/* Top bar */}
       <div className="relative z-30 flex items-center justify-between px-4 py-3 sm:px-6">
         <div className="rounded-full bg-white/80 px-4 py-1.5 text-sm font-bold text-kid-purple shadow-pop backdrop-blur-sm">
           Слайд {index + 1} из {BLOCKS.length}
@@ -562,7 +698,6 @@ function SlideShow({
         </button>
       </div>
 
-      {/* Slide */}
       <div className="relative z-20 flex flex-1 items-stretch overflow-hidden px-2 sm:px-4">
         <button
           onClick={onPrev}
@@ -608,6 +743,12 @@ function SlideShow({
             ))}
           </div>
 
+          {b.id === "prompt" && (
+            <div className="mt-5">
+              <PromptPractice />
+            </div>
+          )}
+
           <div className="mt-5 rounded-2xl bg-gradient-sky px-4 py-3 text-center">
             <p className="text-sm font-bold text-kid-purple sm:text-base">{b.outro}</p>
           </div>
@@ -630,7 +771,6 @@ function SlideShow({
         </button>
       </div>
 
-      {/* Bottom dots + mobile nav */}
       <div className="relative z-30 flex flex-col items-center gap-3 px-4 py-3">
         <div className="flex gap-2">
           {BLOCKS.map((_, i) => (
@@ -662,7 +802,6 @@ function SlideShow({
         </div>
       </div>
 
-      {/* Example dialog */}
       <Dialog open={exampleOpen} onOpenChange={setExampleOpen}>
         <DialogContent className="max-h-[90vh] w-[95vw] max-w-3xl overflow-y-auto overflow-x-hidden border-0 bg-white/95 sm:rounded-3xl">
           <DialogHeader>
