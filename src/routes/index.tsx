@@ -477,10 +477,10 @@ function Index() {
 
       {/* Block details dialog */}
       <Dialog open={!!active} onOpenChange={(o) => !o && setOpenId(null)}>
-        <DialogContent className="no-scrollbar max-h-[92vh] w-[94vw] max-w-xl overflow-y-auto overflow-x-hidden border-0 bg-white/95 p-0 sm:rounded-3xl">
+        <DialogContent className="flex max-h-[92vh] w-[94vw] max-w-xl flex-col overflow-hidden border-0 bg-white/95 p-0 sm:rounded-3xl">
           {active && (
-            <div>
-              <div className={`${active.gradient} px-5 py-6 sm:px-7 sm:py-7`}>
+            <div className="flex min-h-0 flex-1 flex-col">
+              <div className={`${active.gradient} shrink-0 px-5 py-5 sm:px-7 sm:py-6`}>
                 <DialogHeader>
                   <div className="flex items-center gap-3">
                     <span className="text-4xl drop-shadow-lg">{active.emoji}</span>
@@ -489,11 +489,11 @@ function Index() {
                     </DialogTitle>
                   </div>
                 </DialogHeader>
-                <p className="mt-3 text-base font-medium text-white/95 drop-shadow">
+                <p className="mt-2 text-sm font-medium text-white/95 drop-shadow sm:text-base">
                   {active.intro}
                 </p>
               </div>
-              <div className="space-y-5 px-5 py-6 sm:px-7">
+              <div className="min-h-0 flex-1 space-y-5 overflow-y-auto px-5 py-5 sm:px-7">
                 {active.sections.map((s, idx) => (
                   <div key={idx}>
                     <h3 className="text-xl text-kid-purple">{s.heading}</h3>
@@ -528,9 +528,12 @@ function Index() {
                     </a>
                   )}
                 </div>
+              </div>
+              {/* Sticky footer so "Пример" button is always visible */}
+              <div className="shrink-0 border-t border-foreground/5 bg-white/95 px-5 py-3 sm:px-7">
                 <button
                   onClick={() => setExampleOpen(true)}
-                  className="group flex w-full items-center justify-center gap-3 rounded-2xl bg-gradient-candy px-6 py-3.5 text-base font-bold text-white shadow-pop transition-transform hover:scale-[1.02] active:scale-95 sm:text-lg"
+                  className="group flex w-full items-center justify-center gap-3 rounded-2xl bg-gradient-candy px-6 py-3 text-base font-bold text-white shadow-pop transition-transform hover:scale-[1.02] active:scale-95 sm:text-lg"
                 >
                   <Play className="h-5 w-5 fill-white" />
                   Пример: {active.cta}
