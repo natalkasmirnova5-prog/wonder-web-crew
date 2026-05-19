@@ -35,6 +35,10 @@ import ngCatSpace from "../../public/videos/ng-cat-space.mp4.asset.json";
 import ngCastle from "../../public/videos/ng-castle.mp4.asset.json";
 import ngRobotArtist from "../../public/videos/ng-robot-artist.mp4.asset.json";
 import ngDragon from "../../public/videos/ng-dragon.mp4.asset.json";
+import eduWhatIsAi from "../../public/videos/edu-what-is-ai-v2.mp4.asset.json";
+import eduHowToAsk from "../../public/videos/edu-how-to-ask-v2.mp4.asset.json";
+import eduImage from "../../public/videos/edu-image-v2.mp4.asset.json";
+import eduVideoSite from "../../public/videos/edu-video-site-v2.mp4.asset.json";
 import {
   playClick,
   startMusic,
@@ -147,27 +151,27 @@ const BLOCKS: Block[] = [
     examples: [
       {
         kind: "video",
-        src: LV("edu-what-is-ai.mp4"),
+        src: eduWhatIsAi.url,
         poster: LV("edu-what-is-ai.jpg"),
         caption: "Что такое нейросеть",
       },
       {
         kind: "video",
-        src: LV("edu-how-to-ask.mp4"),
+        src: eduHowToAsk.url,
         poster: LV("edu-how-to-ask.jpg"),
-        caption: "Как правильно попросить",
+        caption: "5 шагов золотого промпта",
       },
       {
         kind: "video",
-        src: LV("edu-image.mp4"),
+        src: eduImage.url,
         poster: LV("edu-image.jpg"),
-        caption: "Создаём картинку",
+        caption: "Создаём картинку шаг за шагом",
       },
       {
         kind: "video",
-        src: LV("edu-video-site.mp4"),
+        src: eduVideoSite.url,
         poster: LV("edu-video-site.jpg"),
-        caption: "Видео и сайты с нейросетью",
+        caption: "Делаем сайт и видео вместе",
       },
     ],
   },
