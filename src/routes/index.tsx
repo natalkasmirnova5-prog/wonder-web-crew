@@ -810,7 +810,7 @@ function ExampleCard({
   return <ExampleCardInner item={item} autoLoop={autoLoop} volume={volume} muted={muted} onToggleMute={onToggleMute} />;
 }
 
-function AnimatedImage({ src, alt, motion, decor }: { src: string; alt: string; motion?: string; decor?: "castle" | "space" | "paint" }) {
+function AnimatedImage({ src, alt, motion, decor }: { src: string; alt: string; motion?: string; decor?: "castle" | "space" | "paint" | "wings" }) {
   const ref = useRef<HTMLImageElement | null>(null);
   const [boop, setBoop] = useState(0);
   const [visible, setVisible] = useState(false);
@@ -844,8 +844,14 @@ function AnimatedImage({ src, alt, motion, decor }: { src: string; alt: string; 
         src={src}
         alt={alt}
         loading="lazy"
-        className={`h-full w-full object-cover ${visible ? "opacity-100" : "opacity-0"} ${visible && motion ? motion : ""} ${visible ? "animate-pop" : ""}`}
+        className={`h-full w-full object-cover transition-opacity duration-700 ${visible ? "opacity-100" : "opacity-0"} ${visible && motion ? motion : ""}`}
       />
+      {visible && decor === "wings" && (
+        <div className="pointer-events-none absolute inset-0 overflow-hidden" aria-hidden>
+          <span className="absolute text-3xl animate-wingflap-l" style={{ top: "38%", left: "6%" }}>🪽</span>
+          <span className="absolute text-3xl animate-wingflap-r" style={{ top: "38%", right: "6%" }}>🪽</span>
+        </div>
+      )}
       {visible && decor === "castle" && (
         <div className="pointer-events-none absolute inset-0 overflow-hidden" aria-hidden>
           <span className="absolute text-3xl animate-cloud-a" style={{ top: "12%", left: "-10%" }}>☁️</span>
