@@ -219,6 +219,21 @@
   50% { border-radius: 58% 42% 37% 63% / 53% 47% 53% 47%; }
 }
 @keyframes spin-slow { to { transform: rotate(360deg); } }
+@keyframes dance {
+  0%   { transform: translateY(0)    rotate(-6deg) scale(1); }
+  20%  { transform: translateY(-22px) rotate(8deg)  scale(1.05); }
+  40%  { transform: translateY(6px)  rotate(-10deg) scale(0.98); }
+  60%  { transform: translateY(-14px) rotate(6deg)  scale(1.04); }
+  80%  { transform: translateY(4px)  rotate(-4deg) scale(1); }
+  100% { transform: translateY(0)    rotate(-6deg) scale(1); }
+}
+@keyframes jiggle {
+  0%   { transform: translateY(-10px) rotate(7deg)  scale(1); }
+  25%  { transform: translateY(12px)  rotate(-9deg) scale(1.06); }
+  50%  { transform: translateY(-18px) rotate(10deg) scale(0.97); }
+  75%  { transform: translateY(8px)   rotate(-6deg) scale(1.03); }
+  100% { transform: translateY(-10px) rotate(7deg)  scale(1); }
+}
 
 .animate-float { animation: float-y 6s ease-in-out infinite; }
 .animate-float-2 { animation: float-y2 7s ease-in-out infinite; }
@@ -226,6 +241,8 @@
 .animate-pop { animation: pop-in 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) both; }
 .animate-blob { animation: blob 12s ease-in-out infinite; }
 .animate-spin-slow { animation: spin-slow 30s linear infinite; }
+.animate-dance  { animation: dance 3.4s ease-in-out infinite; transform-origin: 50% 80%; }
+.animate-jiggle { animation: jiggle 3.8s ease-in-out infinite; transform-origin: 50% 80%; }
 
 .card-toy {
   transition: transform 0.35s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.35s;
