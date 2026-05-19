@@ -17,9 +17,13 @@ import {
   X,
   PlayCircle,
   Wand2,
+  Music,
+  VolumeX,
 } from "lucide-react";
 import robot1 from "@/assets/robot1.png";
 import robot2 from "@/assets/robot2.png";
+import dragonBlue from "@/assets/dragon-blue.png";
+import dragonPeach from "@/assets/dragon-peach.png";
 import imgCatSpace from "@/assets/ex-cat-space.jpg";
 import imgCastle from "@/assets/ex-castle.jpg";
 import imgRobotArtist from "@/assets/ex-robot-artist.jpg";
@@ -28,7 +32,13 @@ import imgDragonPizza from "@/assets/ex-dragon-pizza.jpg";
 import imgIcecreamCity from "@/assets/ex-icecream-city.jpg";
 import imgRobotPuppy from "@/assets/ex-robot-puppy.jpg";
 import imgKidsAi from "@/assets/ex-kids-ai.jpg";
-import { playClick } from "@/lib/sound";
+import {
+  playClick,
+  startMusic,
+  duckMusic,
+  setMusicMuted,
+  isMusicMuted,
+} from "@/lib/sound";
 
 export const Route = createFileRoute("/")({
   head: () => ({
