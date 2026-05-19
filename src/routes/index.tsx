@@ -32,6 +32,13 @@ import imgDragon from "@/assets/ex-dragon.jpg";
 import imgIcecreamCity from "@/assets/ex-icecream-city.jpg";
 import imgRobotPuppy from "@/assets/ex-robot-puppy.jpg";
 import imgKidsAi from "@/assets/ex-kids-ai.jpg";
+import imgB1What from "@/assets/ex-b1-what.jpg";
+import imgB1Help from "@/assets/ex-b1-help.jpg";
+import imgB1Text from "@/assets/ex-b1-text.jpg";
+import imgB1Games from "@/assets/ex-b1-games.jpg";
+import imgB1Sites from "@/assets/ex-b1-sites.jpg";
+import imgB1Video from "@/assets/ex-b1-video.jpg";
+import imgB1Images from "@/assets/ex-b1-images.jpg";
 import ngDragonAsset from "../../public/videos/ng-dragon-pixar.mp4.asset.json";
 import ngRobotArtistAsset from "../../public/videos/ng-robot-artist-pixar.mp4.asset.json";
 import ngCatSpaceAsset from "../../public/videos/ng-cat-space-pixar.mp4.asset.json";
@@ -116,10 +123,13 @@ const BLOCKS: Block[] = [
     cta: "Смотри, как это работает",
     examplesTitle: "Что умеют нейросети",
     examples: [
-      { kind: "image", src: imgKidsAi, caption: "Дети творят с нейросетью" },
-      { kind: "image", src: imgRobotArtist, caption: "Робот рисует картину" },
-      { kind: "image", src: imgCatSpace, caption: "Котёнок-астронавт на радуге" },
-      { kind: "image", src: imgDragon, caption: "Дракончик в волшебном лесу" },
+      { kind: "image", src: imgB1What, caption: "Что такое нейросети — умный робот-друг" },
+      { kind: "image", src: imgB1Help, caption: "Помогают дома и в школе" },
+      { kind: "image", src: imgB1Text, caption: "Пишут тексты и сказки" },
+      { kind: "image", src: imgB1Games, caption: "Создают игры" },
+      { kind: "image", src: imgB1Sites, caption: "Делают сайты и приложения" },
+      { kind: "image", src: imgB1Video, caption: "Снимают видео и мультики" },
+      { kind: "image", src: imgB1Images, caption: "Рисуют картинки" },
     ],
   },
   {
