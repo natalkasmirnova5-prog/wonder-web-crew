@@ -19,6 +19,9 @@ import {
   Wand2,
   Music,
   VolumeX,
+  Volume2,
+  Pause,
+  Maximize,
 } from "lucide-react";
 import robot1 from "@/assets/robot1.png";
 import robot2 from "@/assets/robot2.png";
@@ -718,13 +721,7 @@ function PromptPractice() {
 function ExamplesGrid({ items }: { items: ExampleItem[] }) {
   const [autoLoop, setAutoLoop] = useState(true);
   const [volume, setVolume] = useState(0.25);
-  const videosRef = useRef<Array<HTMLVideoElement | null>>([]);
-
-  useEffect(() => {
-    videosRef.current.forEach((v) => {
-      if (v) v.volume = volume;
-    });
-  }, [volume]);
+  const [muted, setMuted] = useState(false);
 
   const bump = (delta: number) =>
     setVolume((v) => Math.min(1, Math.max(0, +(v + delta).toFixed(2))));
@@ -741,6 +738,15 @@ function ExamplesGrid({ items }: { items: ExampleItem[] }) {
           />
           🔁 Автоповтор видео
         </label>
+        <button
+          type="button"
+          onClick={() => setMuted((m) => !m)}
+          aria-label={muted ? "Включить звук" : "Выключить звук"}
+          className="inline-flex items-center gap-2 rounded-full bg-white/80 px-3 py-1.5 text-xs font-bold text-kid-purple shadow-sm ring-1 ring-foreground/5 hover:bg-kid-pink/10 active:scale-95 sm:text-sm"
+        >
+          {muted ? <VolumeX className="h-4 w-4" /> : <Volume2 className="h-4 w-4" />}
+          {muted ? "Звук выкл." : "Звук вкл."}
+        </button>
         <div className="inline-flex items-center gap-2 rounded-full bg-white/80 px-3 py-1.5 text-xs font-bold text-kid-purple shadow-sm ring-1 ring-foreground/5 sm:text-sm">
           <span>🔊 Громкость</span>
           <button
@@ -774,52 +780,167 @@ function ExamplesGrid({ items }: { items: ExampleItem[] }) {
       </div>
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
       {items.map((it, i) => (
-        <figure
+        <ExampleCard
           key={i}
-          className="flex flex-col overflow-hidden rounded-2xl bg-muted/40 shadow-pop ring-1 ring-foreground/5"
-        >
-          <div className="relative w-full overflow-hidden bg-gradient-sky" style={{ aspectRatio: "4 / 3" }}>
-            {it.kind === "image" ? (
-              <img
-                src={it.src}
-                alt={it.caption}
-                loading="lazy"
-                className="absolute inset-0 h-full w-full object-contain"
-              />
-            ) : (
-              <video
-                key={autoLoop ? "loop" : "once"}
-                ref={(el) => {
-                  videosRef.current[i] = el;
-                  if (el) el.volume = volume;
-                }}
-                src={it.src}
-                poster={it.poster}
-                controls
-                loop={autoLoop}
-                playsInline
-                preload="metadata"
-                onClick={(e) => {
-                  const v = e.currentTarget as HTMLVideoElement;
-                  if (v.paused) void v.play().catch(() => {});
-                }}
-                onLoadedMetadata={(e) => {
-                  (e.currentTarget as HTMLVideoElement).volume = volume;
-                }}
-                onPlay={() => duckMusic(true)}
-                onPause={() => duckMusic(false)}
-                onEnded={() => duckMusic(false)}
-                className="absolute inset-0 h-full w-full object-contain bg-black"
-              />
-            )}
-          </div>
-          <figcaption className="block w-full whitespace-normal break-words px-4 py-3 text-center text-sm font-bold leading-snug text-kid-purple sm:text-base">
-            {it.caption}
-          </figcaption>
-        </figure>
+          item={it}
+          autoLoop={autoLoop}
+          volume={volume}
+          muted={muted}
+          onToggleMute={() => setMuted((m) => !m)}
+        />
       ))}
       </div>
     </div>
+  );
+}
+
+function ExampleCard({
+  item,
+  autoLoop,
+  volume,
+  muted,
+  onToggleMute,
+}: {
+  item: ExampleItem;
+  autoLoop: boolean;
+  volume: number;
+  muted: boolean;
+  onToggleMute: () => void;
+}) {
+  const videoRef = useRef<HTMLVideoElement | null>(null);
+  const wrapRef = useRef<HTMLDivElement | null>(null);
+  const [playing, setPlaying] = useState(false);
+
+  useEffect(() => {
+    const v = videoRef.current;
+    if (v) {
+      v.volume = volume;
+      v.muted = muted;
+    }
+  }, [volume, muted]);
+
+  const togglePlay = () => {
+    const v = videoRef.current;
+    if (!v) return;
+    if (v.paused) void v.play().catch(() => {});
+    else v.pause();
+  };
+
+  const goFullscreen = () => {
+    const el = wrapRef.current;
+    if (!el) return;
+    const anyEl = el as HTMLDivElement & {
+      webkitRequestFullscreen?: () => Promise<void>;
+    };
+    if (document.fullscreenElement) {
+      void document.exitFullscreen().catch(() => {});
+    } else if (anyEl.requestFullscreen) {
+      void anyEl.requestFullscreen().catch(() => {});
+    } else if (anyEl.webkitRequestFullscreen) {
+      void anyEl.webkitRequestFullscreen();
+    }
+  };
+
+  return (
+    <figure className="flex flex-col overflow-hidden rounded-2xl bg-muted/40 shadow-pop ring-1 ring-foreground/5">
+      <div
+        ref={wrapRef}
+        className="group relative w-full overflow-hidden bg-gradient-sky"
+        style={{ aspectRatio: "4 / 3" }}
+      >
+        {item.kind === "image" ? (
+          <img
+            src={item.src}
+            alt={item.caption}
+            loading="lazy"
+            className="absolute inset-0 h-full w-full object-contain"
+          />
+        ) : (
+          <>
+            <video
+              key={autoLoop ? "loop" : "once"}
+              ref={videoRef}
+              src={item.src}
+              poster={item.poster}
+              controls
+              loop={autoLoop}
+              playsInline
+              preload="metadata"
+              muted={muted}
+              onClick={togglePlay}
+              onLoadedMetadata={(e) => {
+                const v = e.currentTarget;
+                v.volume = volume;
+                v.muted = muted;
+              }}
+              onPlay={() => {
+                setPlaying(true);
+                duckMusic(true);
+              }}
+              onPause={() => {
+                setPlaying(false);
+                duckMusic(false);
+              }}
+              onEnded={() => {
+                setPlaying(false);
+                duckMusic(false);
+              }}
+              className="absolute inset-0 h-full w-full bg-black object-contain"
+            />
+            {!playing && (
+              <button
+                type="button"
+                onClick={togglePlay}
+                aria-label="Воспроизвести"
+                className="absolute inset-0 grid place-items-center bg-black/20 transition hover:bg-black/30"
+              >
+                <span className="grid h-16 w-16 place-items-center rounded-full bg-white/90 text-kid-purple shadow-pop ring-2 ring-white">
+                  <Play className="h-7 w-7 translate-x-0.5 fill-kid-purple" />
+                </span>
+              </button>
+            )}
+            <div className="pointer-events-none absolute right-2 top-2 flex gap-1.5">
+              <button
+                type="button"
+                onClick={(e) => {
+                  e.stopPropagation();
+                  togglePlay();
+                }}
+                aria-label={playing ? "Пауза" : "Воспроизвести"}
+                className="pointer-events-auto grid h-9 w-9 place-items-center rounded-full bg-white/90 text-kid-purple shadow-pop ring-1 ring-foreground/5 hover:bg-white active:scale-95"
+              >
+                {playing ? <Pause className="h-4 w-4" /> : <Play className="h-4 w-4 fill-kid-purple" />}
+              </button>
+              <button
+                type="button"
+                onClick={(e) => {
+                  e.stopPropagation();
+                  onToggleMute();
+                }}
+                aria-label={muted ? "Включить звук" : "Выключить звук"}
+                className="pointer-events-auto grid h-9 w-9 place-items-center rounded-full bg-white/90 text-kid-purple shadow-pop ring-1 ring-foreground/5 hover:bg-white active:scale-95"
+              >
+                {muted ? <VolumeX className="h-4 w-4" /> : <Volume2 className="h-4 w-4" />}
+              </button>
+              <button
+                type="button"
+                onClick={(e) => {
+                  e.stopPropagation();
+                  goFullscreen();
+                }}
+                aria-label="Во весь экран"
+                className="pointer-events-auto grid h-9 w-9 place-items-center rounded-full bg-white/90 text-kid-purple shadow-pop ring-1 ring-foreground/5 hover:bg-white active:scale-95"
+              >
+                <Maximize className="h-4 w-4" />
+              </button>
+            </div>
+          </>
+        )}
+      </div>
+      <figcaption className="block min-h-[3rem] w-full whitespace-normal break-words px-4 py-3 text-center text-sm font-bold leading-snug text-kid-purple sm:text-base">
+        {item.caption}
+      </figcaption>
+    </figure>
   );
 }
 
