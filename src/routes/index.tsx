@@ -682,6 +682,7 @@ function ExamplesGrid({ items }: { items: ExampleItem[] }) {
                 src={it.src}
                 poster={it.poster}
                 controls
+                loop
                 playsInline
                 preload="metadata"
                 onPlay={() => duckMusic(true)}
