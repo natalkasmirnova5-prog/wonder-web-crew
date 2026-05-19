@@ -545,7 +545,7 @@ function Index() {
 
       {/* Examples gallery */}
       <Dialog open={exampleOpen} onOpenChange={setExampleOpen}>
-        <DialogContent className="max-h-[90vh] w-[95vw] max-w-3xl overflow-y-auto overflow-x-hidden border-0 bg-white/95 sm:rounded-3xl">
+        <DialogContent className="no-scrollbar max-h-[92vh] w-[95vw] max-w-3xl overflow-y-auto overflow-x-hidden border-0 bg-white/95 sm:rounded-3xl">
           <DialogHeader>
             <DialogTitle className="text-2xl text-kid-purple">
               {active?.examplesTitle ?? "Примеры"}
@@ -764,6 +764,27 @@ function MusicPlayer() {
       className="fixed bottom-4 right-4 z-[60] inline-flex h-12 w-12 items-center justify-center rounded-full bg-white/95 text-kid-purple shadow-pop ring-2 ring-kid-pink/40 backdrop-blur transition-transform hover:scale-110 active:scale-95"
     >
       {muted ? <VolumeX className="h-6 w-6" /> : <Music className="h-6 w-6" />}
+    </button>
+  );
+}
+
+function HeroMusicToggle() {
+  const [muted, setMuted] = useState(false);
+  useEffect(() => {
+    setMuted(isMusicMuted());
+  }, []);
+  return (
+    <button
+      onClick={() => {
+        const next = !muted;
+        setMuted(next);
+        setMusicMuted(next);
+        if (!next) startMusic();
+      }}
+      className="inline-flex items-center gap-2 rounded-2xl bg-white px-5 py-3 font-bold text-kid-purple shadow-pop ring-2 ring-kid-pink/40 transition-transform hover:scale-105 active:scale-95"
+    >
+      {muted ? <VolumeX className="h-5 w-5" /> : <Music className="h-5 w-5" />}
+      {muted ? "Включить звук" : "Выключить звук"}
     </button>
   );
 }
