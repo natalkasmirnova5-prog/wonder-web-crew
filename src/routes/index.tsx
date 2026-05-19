@@ -845,12 +845,7 @@ function ExampleCard({
         style={{ aspectRatio: "4 / 3" }}
       >
         {item.kind === "image" ? (
-          <img
-            src={item.src}
-            alt={item.caption}
-            loading="lazy"
-            className="absolute inset-0 h-full w-full object-contain"
-          />
+          <AnimatedImage src={item.src} alt={item.caption} motion={item.motion} />
         ) : (
           <>
             <video
