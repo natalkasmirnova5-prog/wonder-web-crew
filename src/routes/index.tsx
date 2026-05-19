@@ -19,6 +19,9 @@ import {
   Wand2,
   Music,
   VolumeX,
+  Volume2,
+  Pause,
+  Maximize,
 } from "lucide-react";
 import robot1 from "@/assets/robot1.png";
 import robot2 from "@/assets/robot2.png";
