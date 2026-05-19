@@ -564,6 +564,11 @@ function PromptPractice() {
   const [place, setPlace] = useState("");
   const [style, setStyle] = useState("в стиле Pixar");
   const [result, setResult] = useState<string | null>(null);
+  const [history, setHistory] = useState<string[]>([]);
+
+  const GOAL = 5;
+  const made = history.length;
+  const progress = Math.min(100, Math.round((made / GOAL) * 100));
 
   const heroes = ["котёнок-астронавт", "дракончик", "робот-друг", "единорог", "пингвин-пират"];
   const places = ["на радуге", "в волшебном лесу", "на луне", "в городе из мороженого", "под водой"];
@@ -571,9 +576,9 @@ function PromptPractice() {
   const generate = () => {
     const h = hero.trim() || heroes[Math.floor(Math.random() * heroes.length)];
     const p = place.trim() || places[Math.floor(Math.random() * places.length)];
-    setResult(
-      `Нарисуй ${h}, который весело играет ${p}, ${style}, яркие краски, доброе настроение, большие глаза, мультяшный свет ✨`,
-    );
+    const prompt = `Нарисуй ${h}, который весело играет ${p}, ${style}, яркие краски, доброе настроение, большие глаза, мультяшный свет ✨`;
+    setResult(prompt);
+    setHistory((prev) => (prev[0] === prompt ? prev : [prompt, ...prev].slice(0, 10)));
   };
 
   const surprise = () => {
@@ -655,6 +660,58 @@ function PromptPractice() {
           <p className="text-sm font-semibold text-foreground sm:text-base">«{result}»</p>
         </div>
       )}
+
+      <div className="mt-5">
+        <div className="mb-1 flex items-center justify-between text-xs font-bold text-kid-purple">
+          <span>Твой прогресс: {made}/{GOAL} промптов</span>
+          <span>{made >= GOAL ? "Молодец! 🏆" : "Продолжай! ✨"}</span>
+        </div>
+        <div className="h-3 w-full overflow-hidden rounded-full bg-muted">
+          <div
+            className="h-full rounded-full bg-gradient-candy transition-all duration-500"
+            style={{ width: `${progress}%` }}
+          />
+        </div>
+        <div className="mt-1 flex gap-1">
+          {Array.from({ length: GOAL }).map((_, i) => (
+            <span
+              key={i}
+              className={`text-base ${i < made ? "opacity-100" : "opacity-30 grayscale"}`}
+              aria-hidden
+            >
+              ⭐
+            </span>
+          ))}
+        </div>
+      </div>
+
+      {history.length > 0 && (
+        <div className="mt-4 rounded-2xl bg-white/70 p-3 ring-2 ring-kid-blue/30">
+          <div className="mb-2 flex items-center justify-between">
+            <div className="text-xs font-bold uppercase tracking-wider text-kid-blue">
+              История промптов ({history.length})
+            </div>
+            <button
+              type="button"
+              onClick={() => setHistory([])}
+              className="rounded-full bg-muted px-3 py-0.5 text-[11px] font-bold text-kid-purple hover:bg-kid-pink/20"
+            >
+              Очистить
+            </button>
+          </div>
+          <ol className="max-h-40 space-y-1.5 overflow-y-auto pr-1">
+            {history.map((h, i) => (
+              <li
+                key={i}
+                className="rounded-xl bg-white px-3 py-1.5 text-xs text-foreground/85 shadow-sm sm:text-sm"
+              >
+                <span className="mr-1 font-bold text-kid-pink">#{history.length - i}</span>
+                {h}
+              </li>
+            ))}
+          </ol>
+        </div>
+      )}
     </div>
   );
 }
@@ -682,6 +739,7 @@ function ExamplesGrid({ items }: { items: ExampleItem[] }) {
                 src={it.src}
                 poster={it.poster}
                 controls
+                loop
                 playsInline
                 preload="metadata"
                 onPlay={() => duckMusic(true)}
