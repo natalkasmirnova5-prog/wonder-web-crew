@@ -322,12 +322,16 @@ function Index() {
   // Play a cheerful click sound on any button press anywhere on the page
   const onClickCapture = (e: React.MouseEvent<HTMLDivElement>) => {
     const t = e.target as HTMLElement;
-    if (t.closest("button, [role='button'], a")) playClick();
+    if (t.closest("button, [role='button'], a")) {
+      playClick();
+      startMusic(); // user-gesture: kick off background music
+    }
   };
 
   if (slideMode) {
     return (
       <div onClickCapture={onClickCapture}>
+        <MusicPlayer />
         <SlideShow
           index={slideIdx}
           onPrev={() => setSlideIdx((i) => Math.max(i - 1, 0))}
@@ -342,6 +346,19 @@ function Index() {
   return (
     <div className="relative min-h-screen overflow-hidden" onClickCapture={onClickCapture}>
       <DecorBackground />
+      <MusicPlayer />
+
+      {/* Two cheerful Pixar-style baby dragons flapping their wings */}
+      <img
+        src={dragonBlue}
+        alt="Маленький голубой дракончик"
+        className="pointer-events-none absolute left-2 top-[58%] z-10 w-24 sm:left-6 sm:top-[40%] sm:w-36 md:w-44 animate-dance drop-shadow-2xl"
+      />
+      <img
+        src={dragonPeach}
+        alt="Маленький персиковый дракончик"
+        className="pointer-events-none absolute right-2 top-[60%] z-10 w-24 sm:right-6 sm:top-[42%] sm:w-36 md:w-44 animate-jiggle drop-shadow-2xl"
+      />
 
       {/* Robots — placed lower so they never cover the title; original soft float animations */}
       <img
