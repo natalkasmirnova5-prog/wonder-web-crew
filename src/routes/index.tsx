@@ -931,7 +931,7 @@ function ExampleCardInner({
         style={{ aspectRatio: "4 / 3" }}
       >
         {item.kind === "image" ? (
-          <AnimatedImage src={item.src} alt={item.caption} motion={item.motion} />
+          <AnimatedImage src={item.src} alt={item.caption} motion={item.motion} decor={item.decor} />
         ) : (
           <>
             <video
