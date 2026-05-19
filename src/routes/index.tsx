@@ -22,8 +22,6 @@ import {
 } from "lucide-react";
 import robot1 from "@/assets/robot1.png";
 import robot2 from "@/assets/robot2.png";
-import dragonBlue from "@/assets/dragon-blue.png";
-import dragonPeach from "@/assets/dragon-peach.png";
 import imgCatSpace from "@/assets/ex-cat-space.jpg";
 import imgCastle from "@/assets/ex-castle.jpg";
 import imgRobotArtist from "@/assets/ex-robot-artist.jpg";
@@ -394,18 +392,6 @@ function Index() {
     <div className="relative min-h-screen overflow-hidden" onClickCapture={onClickCapture}>
       <DecorBackground />
       <MusicPlayer />
-
-      {/* Two cheerful Pixar-style baby dragons flapping their wings */}
-      <img
-        src={dragonBlue}
-        alt="Маленький голубой дракончик"
-        className="pointer-events-none absolute left-3 top-[68%] z-10 w-24 sm:left-8 sm:top-[58%] sm:w-36 md:w-44 animate-wingflap-l drop-shadow-2xl"
-      />
-      <img
-        src={dragonPeach}
-        alt="Маленький персиковый дракончик"
-        className="pointer-events-none absolute right-3 top-[70%] z-10 w-24 sm:right-8 sm:top-[60%] sm:w-36 md:w-44 animate-wingflap-r drop-shadow-2xl"
-      />
 
       {/* Robots — placed lower so they never cover the title; original soft float animations */}
       <img
