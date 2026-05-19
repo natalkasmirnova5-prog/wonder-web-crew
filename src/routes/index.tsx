@@ -28,7 +28,6 @@ import imgCatSpace from "@/assets/ex-cat-space.jpg";
 import imgCastle from "@/assets/ex-castle.jpg";
 import imgRobotArtist from "@/assets/ex-robot-artist.jpg";
 import imgDragon from "@/assets/ex-dragon.jpg";
-import imgDragonPizza from "@/assets/ex-dragon-pizza.jpg";
 import imgIcecreamCity from "@/assets/ex-icecream-city.jpg";
 import imgRobotPuppy from "@/assets/ex-robot-puppy.jpg";
 import imgKidsAi from "@/assets/ex-kids-ai.jpg";
