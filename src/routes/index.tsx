@@ -840,8 +840,7 @@ function AnimatedImage({ src, alt, motion }: { src: string; alt: string; motion?
         src={src}
         alt={alt}
         loading="lazy"
-        className={`h-full w-full object-contain transition-transform ${visible ? motion ?? "animate-float" : "opacity-0"} ${visible ? "animate-pop" : ""}`}
-        style={{ animationDelay: "0s" }}
+        className={`h-full w-full object-contain ${visible ? "opacity-100" : "opacity-0"} ${visible && motion ? motion : ""} ${visible ? "animate-pop" : ""}`}
       />
     </button>
   );
