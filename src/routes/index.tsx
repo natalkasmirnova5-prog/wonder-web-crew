@@ -695,6 +695,28 @@ function BlockCard({
 
 /* ───────────────────────────── Background decor ───────────────────────────── */
 
+function MusicPlayer() {
+  const [muted, setMuted] = useState(false);
+  useEffect(() => {
+    setMuted(isMusicMuted());
+  }, []);
+  return (
+    <button
+      onClick={() => {
+        const next = !muted;
+        setMuted(next);
+        setMusicMuted(next);
+        if (!next) startMusic();
+      }}
+      aria-label={muted ? "Включить музыку" : "Выключить музыку"}
+      title={muted ? "Включить музыку" : "Выключить музыку"}
+      className="fixed bottom-4 right-4 z-[60] inline-flex h-12 w-12 items-center justify-center rounded-full bg-white/95 text-kid-purple shadow-pop ring-2 ring-kid-pink/40 backdrop-blur transition-transform hover:scale-110 active:scale-95"
+    >
+      {muted ? <VolumeX className="h-6 w-6" /> : <Music className="h-6 w-6" />}
+    </button>
+  );
+}
+
 function DecorBackground() {
   return (
     <div aria-hidden className="pointer-events-none absolute inset-0 z-0 overflow-hidden">
