@@ -723,12 +723,9 @@ function ExamplesGrid({ items }: { items: ExampleItem[] }) {
   const [volume, setVolume] = useState(0.25);
   const [muted, setMuted] = useState(false);
 
-  const bump = (delta: number) =>
-    setVolume((v) => Math.min(1, Math.max(0, +(v + delta).toFixed(2))));
-
   return (
     <div className="space-y-3">
-      <div className="flex flex-wrap items-center gap-2">
+      <div className="flex flex-wrap items-center gap-3">
         <label className="inline-flex cursor-pointer items-center gap-2 rounded-full bg-white/80 px-3 py-1.5 text-xs font-bold text-kid-purple shadow-sm ring-1 ring-foreground/5 sm:text-sm">
           <input
             type="checkbox"
@@ -736,27 +733,10 @@ function ExamplesGrid({ items }: { items: ExampleItem[] }) {
             onChange={(e) => setAutoLoop(e.target.checked)}
             className="h-4 w-4 accent-kid-pink"
           />
-          🔁 Автоповтор видео
+          🔁 Автоповтор
         </label>
-        <button
-          type="button"
-          onClick={() => setMuted((m) => !m)}
-          aria-label={muted ? "Включить звук" : "Выключить звук"}
-          className="inline-flex items-center gap-2 rounded-full bg-white/80 px-3 py-1.5 text-xs font-bold text-kid-purple shadow-sm ring-1 ring-foreground/5 hover:bg-kid-pink/10 active:scale-95 sm:text-sm"
-        >
-          {muted ? <VolumeX className="h-4 w-4" /> : <Volume2 className="h-4 w-4" />}
-          {muted ? "Звук выкл." : "Звук вкл."}
-        </button>
-        <div className="inline-flex items-center gap-2 rounded-full bg-white/80 px-3 py-1.5 text-xs font-bold text-kid-purple shadow-sm ring-1 ring-foreground/5 sm:text-sm">
-          <span>🔊 Громкость</span>
-          <button
-            type="button"
-            onClick={() => bump(-0.1)}
-            aria-label="Тише"
-            className="grid h-7 w-7 place-items-center rounded-full bg-kid-purple/10 text-base font-bold text-kid-purple hover:bg-kid-purple/20 active:scale-95"
-          >
-            −
-          </button>
+        <label className="inline-flex items-center gap-2 rounded-full bg-white/80 px-3 py-1.5 text-xs font-bold text-kid-purple shadow-sm ring-1 ring-foreground/5 sm:text-sm">
+          🔊
           <input
             type="range"
             min={0}
@@ -764,19 +744,10 @@ function ExamplesGrid({ items }: { items: ExampleItem[] }) {
             step={0.05}
             value={volume}
             onChange={(e) => setVolume(parseFloat(e.target.value))}
-            className="h-1 w-20 cursor-pointer accent-kid-pink sm:w-28"
+            className="h-1 w-24 cursor-pointer accent-kid-pink"
             aria-label="Громкость видео"
           />
-          <button
-            type="button"
-            onClick={() => bump(0.1)}
-            aria-label="Громче"
-            className="grid h-7 w-7 place-items-center rounded-full bg-kid-purple/10 text-base font-bold text-kid-purple hover:bg-kid-purple/20 active:scale-95"
-          >
-            +
-          </button>
-          <span className="w-8 text-right tabular-nums">{Math.round(volume * 100)}%</span>
-        </div>
+        </label>
       </div>
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
       {items.map((it, i) => (
