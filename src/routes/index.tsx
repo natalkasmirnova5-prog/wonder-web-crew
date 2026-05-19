@@ -64,7 +64,7 @@ export const Route = createFileRoute("/")({
 
 type ExampleItem =
   | { kind: "video"; src: string; poster?: string; caption: string }
-  | { kind: "image"; src: string; caption: string };
+  | { kind: "image"; src: string; caption: string; motion?: string };
 
 type Block = {
   id: string;
@@ -207,21 +207,25 @@ const BLOCKS: Block[] = [
         kind: "image",
         src: imgCatSpace,
         caption: "Котёнок-астронавт",
+        motion: "animate-float",
       },
       {
         kind: "image",
         src: imgCastle,
         caption: "Сказочный замок на облаке",
+        motion: "animate-float-2",
       },
       {
         kind: "image",
         src: imgRobotArtist,
         caption: "Робот-художник",
+        motion: "animate-wobble",
       },
       {
         kind: "image",
         src: imgDragon,
         caption: "Добрый дракончик",
+        motion: "animate-wingflap-r",
       },
     ],
   },
@@ -253,24 +257,28 @@ const BLOCKS: Block[] = [
     examplesTitle: "Нейровидео — 4 примера",
     examples: [
       {
-        kind: "video",
-        src: ngDragon.url,
+        kind: "image",
+        src: imgDragon,
         caption: "Дракончик машет крылышками",
+        motion: "animate-wingflap-r",
       },
       {
-        kind: "video",
-        src: ngRobotArtist.url,
+        kind: "image",
+        src: imgRobotArtist,
         caption: "Робот-художник рисует мечту",
+        motion: "animate-wobble",
       },
       {
-        kind: "video",
-        src: ngCatSpace.url,
+        kind: "image",
+        src: imgCatSpace,
         caption: "Котик-космонавт в путешествии",
+        motion: "animate-float",
       },
       {
-        kind: "video",
-        src: ngCastle.url,
+        kind: "image",
+        src: imgCastle,
         caption: "Волшебный замок оживает",
+        motion: "animate-float-2",
       },
     ],
   },
@@ -799,6 +807,62 @@ function ExampleCard({
   muted: boolean;
   onToggleMute: () => void;
 }) {
+  return <ExampleCardInner item={item} autoLoop={autoLoop} volume={volume} muted={muted} onToggleMute={onToggleMute} />;
+}
+
+function AnimatedImage({ src, alt, motion }: { src: string; alt: string; motion?: string }) {
+  const ref = useRef<HTMLImageElement | null>(null);
+  const [boop, setBoop] = useState(0);
+  const [visible, setVisible] = useState(false);
+
+  useEffect(() => {
+    const el = ref.current;
+    if (!el || typeof IntersectionObserver === "undefined") {
+      setVisible(true);
+      return;
+    }
+    const io = new IntersectionObserver(
+      (entries) => {
+        for (const e of entries) if (e.isIntersecting) setVisible(true);
+      },
+      { threshold: 0.2 },
+    );
+    io.observe(el);
+    return () => io.disconnect();
+  }, []);
+
+  return (
+    <button
+      type="button"
+      onClick={() => setBoop((n) => n + 1)}
+      aria-label={alt}
+      className="absolute inset-0 grid place-items-center cursor-pointer select-none focus:outline-none"
+    >
+      <img
+        ref={ref}
+        key={`boop-${boop}`}
+        src={src}
+        alt={alt}
+        loading="lazy"
+        className={`h-full w-full object-contain ${visible ? "opacity-100" : "opacity-0"} ${visible && motion ? motion : ""} ${visible ? "animate-pop" : ""}`}
+      />
+    </button>
+  );
+}
+
+function ExampleCardInner({
+  item,
+  autoLoop,
+  volume,
+  muted,
+  onToggleMute,
+}: {
+  item: ExampleItem;
+  autoLoop: boolean;
+  volume: number;
+  muted: boolean;
+  onToggleMute: () => void;
+}) {
   const videoRef = useRef<HTMLVideoElement | null>(null);
   const wrapRef = useRef<HTMLDivElement | null>(null);
   const [playing, setPlaying] = useState(false);
@@ -841,12 +905,7 @@ function ExampleCard({
         style={{ aspectRatio: "4 / 3" }}
       >
         {item.kind === "image" ? (
-          <img
-            src={item.src}
-            alt={item.caption}
-            loading="lazy"
-            className="absolute inset-0 h-full w-full object-contain"
-          />
+          <AnimatedImage src={item.src} alt={item.caption} motion={item.motion} />
         ) : (
           <>
             <video
