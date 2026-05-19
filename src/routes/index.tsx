@@ -634,7 +634,9 @@ function ExamplesGrid({ items }: { items: ExampleItem[] }) {
                 controls
                 playsInline
                 preload="metadata"
-                crossOrigin="anonymous"
+                onPlay={() => duckMusic(true)}
+                onPause={() => duckMusic(false)}
+                onEnded={() => duckMusic(false)}
                 className="absolute inset-0 h-full w-full object-contain bg-black"
               />
             )}
