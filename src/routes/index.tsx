@@ -33,10 +33,10 @@ import ngCatSpace from "../../public/videos/ng-cat-space.mp4.asset.json";
 import ngCastle from "../../public/videos/ng-castle.mp4.asset.json";
 import ngRobotArtist from "../../public/videos/ng-robot-artist.mp4.asset.json";
 import ngDragon from "../../public/videos/ng-dragon.mp4.asset.json";
-import eduWhatIsAi from "../../public/videos/edu-what-is-ai-v2.mp4.asset.json";
-import eduHowToAsk from "../../public/videos/edu-how-to-ask-v2.mp4.asset.json";
-import eduImage from "../../public/videos/edu-image-v2.mp4.asset.json";
-import eduVideoSite from "../../public/videos/edu-video-site-v2.mp4.asset.json";
+import eduWhatIsAi from "../../public/videos/edu-what-is-ai-v3.mp4.asset.json";
+import eduHowToAsk from "../../public/videos/edu-how-to-ask-v3.mp4.asset.json";
+import eduImage from "../../public/videos/edu-image-v3.mp4.asset.json";
+import eduVideoSite from "../../public/videos/edu-video-site-v3.mp4.asset.json";
 import {
   playClick,
   startMusic,
