@@ -30,7 +30,7 @@ const variants: Array<{ id: string; props: EduProps }> = [
   {
     id: "how-to-ask",
     props: {
-      title: "Как правильно просить?",
+      title: "Как правильно говорить?",
       subtitle: "Запомни 5 шагов золотого промпта",
       steps: [
         { label: "КТО", value: "Котёнок-космонавт" },
