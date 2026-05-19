@@ -478,7 +478,7 @@ function Index() {
 
       {/* Block details dialog */}
       <Dialog open={!!active} onOpenChange={(o) => !o && setOpenId(null)}>
-        <DialogContent className="max-h-[88vh] w-[94vw] max-w-lg overflow-y-auto overflow-x-hidden border-0 bg-white/95 p-0 sm:rounded-3xl">
+        <DialogContent className="no-scrollbar max-h-[92vh] w-[94vw] max-w-xl overflow-y-auto overflow-x-hidden border-0 bg-white/95 p-0 sm:rounded-3xl">
           {active && (
             <div>
               <div className={`${active.gradient} px-5 py-6 sm:px-7 sm:py-7`}>
@@ -518,6 +518,16 @@ function Index() {
 
                 <div className="rounded-2xl bg-gradient-sky px-5 py-3 text-center">
                   <p className="text-sm font-bold text-kid-purple sm:text-base">{active.outro}</p>
+                  {active.id === "outro" && (
+                    <a
+                      href="https://chat.qwen.ai"
+                      target="_blank"
+                      rel="noreferrer noopener"
+                      className="mt-3 inline-flex items-center gap-2 rounded-full bg-white px-5 py-2 text-sm font-extrabold text-kid-purple shadow-pop ring-2 ring-kid-pink/40 transition-transform hover:scale-105 active:scale-95 sm:text-base"
+                    >
+                      ✨ Открыть chat.qwen.ai →
+                    </a>
+                  )}
                 </div>
                 <button
                   onClick={() => setExampleOpen(true)}
