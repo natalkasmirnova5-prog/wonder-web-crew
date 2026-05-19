@@ -309,6 +309,27 @@
 .no-scrollbar { scrollbar-width: none; -ms-overflow-style: none; }
 .no-scrollbar::-webkit-scrollbar { display: none; }
 
+/* Visible, kid-friendly scrollbar for the Examples dialog */
+.examples-scroll {
+  scrollbar-width: thin;
+  scrollbar-color: var(--kid-pink) transparent;
+  scroll-behavior: smooth;
+  overscroll-behavior: contain;
+}
+.examples-scroll::-webkit-scrollbar { width: 10px; }
+.examples-scroll::-webkit-scrollbar-track {
+  background: oklch(0.95 0.04 320);
+  border-radius: 9999px;
+}
+.examples-scroll::-webkit-scrollbar-thumb {
+  background: var(--kid-pink);
+  border-radius: 9999px;
+  border: 2px solid oklch(0.95 0.04 320);
+}
+.examples-scroll::-webkit-scrollbar-thumb:hover {
+  background: var(--kid-purple);
+}
+
 .card-toy {
   transition: transform 0.35s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.35s;
 }
