@@ -35,7 +35,6 @@ import imgKidsAi from "@/assets/ex-kids-ai.jpg";
 import imgB1What from "@/assets/ex-b1-what.jpg";
 import imgB1Help from "@/assets/ex-b1-help.jpg";
 import imgB1Text from "@/assets/ex-b1-text.jpg";
-import imgB1Games from "@/assets/ex-b1-games.jpg";
 import imgB1Sites from "@/assets/ex-b1-sites.jpg";
 import imgB1Video from "@/assets/ex-b1-video.jpg";
 import imgB1Images from "@/assets/ex-b1-images.jpg";
