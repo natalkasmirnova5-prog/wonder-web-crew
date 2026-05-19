@@ -64,7 +64,7 @@ export const Route = createFileRoute("/")({
 
 type ExampleItem =
   | { kind: "video"; src: string; poster?: string; caption: string }
-  | { kind: "image"; src: string; caption: string; motion?: string };
+  | { kind: "image"; src: string; caption: string; motion?: string; decor?: "castle" | "space" | "paint" };
 
 type Block = {
   id: string;
