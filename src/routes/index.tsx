@@ -31,6 +31,10 @@ import imgDragon from "@/assets/ex-dragon.jpg";
 import imgIcecreamCity from "@/assets/ex-icecream-city.jpg";
 import imgRobotPuppy from "@/assets/ex-robot-puppy.jpg";
 import imgKidsAi from "@/assets/ex-kids-ai.jpg";
+import ngCatSpace from "../../public/videos/ng-cat-space.mp4.asset.json";
+import ngCastle from "../../public/videos/ng-castle.mp4.asset.json";
+import ngRobotArtist from "../../public/videos/ng-robot-artist.mp4.asset.json";
+import ngDragon from "../../public/videos/ng-dragon.mp4.asset.json";
 import {
   playClick,
   startMusic,
@@ -249,27 +253,27 @@ const BLOCKS: Block[] = [
     examples: [
       {
         kind: "video",
-        src: LV("neuro-video-dragon-book.mp4"),
-        poster: LV("neuro-video-dragon-book.jpg"),
-        caption: "Дракончик и книга идей",
+        src: ngDragon.url,
+        poster: LV("nc-dragon.jpg"),
+        caption: "Дракончик машет крылышками",
       },
       {
         kind: "video",
-        src: LV("neuro-video-robot-painter.mp4"),
-        poster: LV("neuro-video-robot-painter.jpg"),
+        src: ngRobotArtist.url,
+        poster: LV("nc-robot-artist.jpg"),
         caption: "Робот-художник рисует мечту",
       },
       {
         kind: "video",
-        src: LV("neuro-video-prompt-magic.mp4"),
-        poster: LV("neuro-video-prompt-magic.jpg"),
-        caption: "Магия хорошего промпта",
+        src: ngCatSpace.url,
+        poster: LV("nc-cat-space.jpg"),
+        caption: "Котик-космонавт в путешествии",
       },
       {
         kind: "video",
-        src: LV("neuro-video-website-garden.mp4"),
-        poster: LV("neuro-video-website-garden.jpg"),
-        caption: "Сайт-сад для школьного проекта",
+        src: ngCastle.url,
+        poster: LV("nc-castle.jpg"),
+        caption: "Волшебный замок оживает",
       },
     ],
   },
