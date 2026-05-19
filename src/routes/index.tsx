@@ -64,7 +64,7 @@ export const Route = createFileRoute("/")({
 
 type ExampleItem =
   | { kind: "video"; src: string; poster?: string; caption: string }
-  | { kind: "image"; src: string; caption: string; motion?: string; decor?: "castle" | "space" | "paint" };
+  | { kind: "image"; src: string; caption: string; motion?: string; decor?: "castle" | "space" | "paint" | "wings" };
 
 type Block = {
   id: string;
@@ -260,27 +260,24 @@ const BLOCKS: Block[] = [
         kind: "image",
         src: imgDragon,
         caption: "Дракончик машет крылышками",
-        motion: "animate-wingflap-r",
+        decor: "wings",
       },
       {
         kind: "image",
         src: imgRobotArtist,
         caption: "Робот-художник рисует мечту",
-        motion: "animate-paint",
         decor: "paint",
       },
       {
         kind: "image",
         src: imgCatSpace,
         caption: "Котик-космонавт в путешествии",
-        motion: "animate-orbit",
         decor: "space",
       },
       {
         kind: "image",
         src: imgCastle,
         caption: "Волшебный замок оживает",
-        motion: "animate-float-2",
         decor: "castle",
       },
     ],
