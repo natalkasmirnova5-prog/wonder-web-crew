@@ -395,7 +395,3 @@ function DecorBackground() {
     </div>
   );
 }
-
-function Index() {
-  return <PlaceholderIndex />;
-}
