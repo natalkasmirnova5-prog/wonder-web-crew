@@ -32,10 +32,10 @@ import imgDragon from "@/assets/ex-dragon.jpg";
 import imgIcecreamCity from "@/assets/ex-icecream-city.jpg";
 import imgRobotPuppy from "@/assets/ex-robot-puppy.jpg";
 import imgKidsAi from "@/assets/ex-kids-ai.jpg";
-const ngCatSpace = { url: "/videos/ng-cat-space-v2.mp4" };
-const ngCastle = { url: "/videos/ng-castle-v2.mp4" };
-const ngRobotArtist = { url: "/videos/ng-robot-artist-v2.mp4" };
-const ngDragon = { url: "/videos/ng-dragon-v2.mp4" };
+import ngDragonAsset from "../../public/videos/ng-dragon-pixar.mp4.asset.json";
+import ngRobotArtistAsset from "../../public/videos/ng-robot-artist-pixar.mp4.asset.json";
+import ngCatSpaceAsset from "../../public/videos/ng-cat-space-pixar.mp4.asset.json";
+import ngCastleAsset from "../../public/videos/ng-castle-pixar.mp4.asset.json";
 const eduWhatIsAi = { url: "/videos/edu-what-is-ai-v5.mp4" };
 const eduHowToAsk = { url: "/videos/edu-how-to-ask-v6.mp4" };
 const eduImage = { url: "/videos/edu-image-v5.mp4" };
@@ -257,28 +257,28 @@ const BLOCKS: Block[] = [
     examplesTitle: "Нейровидео — 4 примера",
     examples: [
       {
-        kind: "image",
-        src: imgDragon,
+        kind: "video",
+        src: ngDragonAsset.url,
+        poster: imgDragon,
         caption: "Дракончик машет крылышками",
-        decor: "wings",
       },
       {
-        kind: "image",
-        src: imgRobotArtist,
+        kind: "video",
+        src: ngRobotArtistAsset.url,
+        poster: imgRobotArtist,
         caption: "Робот-художник рисует мечту",
-        decor: "paint",
       },
       {
-        kind: "image",
-        src: imgCatSpace,
+        kind: "video",
+        src: ngCatSpaceAsset.url,
+        poster: imgCatSpace,
         caption: "Котик-космонавт в путешествии",
-        decor: "space",
       },
       {
-        kind: "image",
-        src: imgCastle,
+        kind: "video",
+        src: ngCastleAsset.url,
+        poster: imgCastle,
         caption: "Волшебный замок оживает",
-        decor: "castle",
       },
     ],
   },
@@ -917,6 +917,7 @@ function ExampleCardInner({
               loop={autoLoop}
               playsInline
               preload="metadata"
+              autoPlay
               muted={muted}
               onClick={togglePlay}
               onLoadedMetadata={(e) => {
@@ -936,7 +937,7 @@ function ExampleCardInner({
                 setPlaying(false);
                 duckMusic(false);
               }}
-              className="absolute inset-0 h-full w-full bg-black object-contain"
+              className="absolute inset-0 h-full w-full bg-black object-cover"
             />
             {!playing && (
               <button
