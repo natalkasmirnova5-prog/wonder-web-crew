@@ -438,6 +438,18 @@ function Index() {
             Добро пожаловать в мир нейросетей! 🚀
           </h1>
 
+          <p className="mx-auto mt-4 text-base font-semibold text-kid-purple sm:text-lg">
+            Автор и нейроспециалист{" "}
+            <a
+              href="https://vk.com/id170079854"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="underline decoration-kid-pink decoration-2 underline-offset-4 hover:text-kid-pink"
+            >
+              Натали Смирнова
+            </a>
+          </p>
+
           <p className="mx-auto mt-6 max-w-2xl rounded-2xl bg-white/70 px-4 py-3 text-base font-medium text-foreground/80 backdrop-blur-sm sm:text-xl">
             Сегодня ты узнаешь, кто такие нейрокреаторы, нейровидеографы и вайб-кодеры —
             и как самому стать волшебником с помощью нейросетей ✨
