@@ -72,9 +72,8 @@ type Block = {
   examples: ExampleItem[];
 };
 
-// Reliable public video samples (Google demo bucket — CORS-friendly, autoplay-safe)
-const V = (name: string) =>
-  `https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/${name}.mp4`;
+// Local Russian-language kids videos (with music)
+const LV = (name: string) => `/videos/${name}`;
 
 // Public website screenshot service
 const SHOT = (url: string) =>
@@ -209,10 +208,30 @@ const BLOCKS: Block[] = [
     cta: "Смотреть нейровидео",
     examplesTitle: "Нейровидео — 4 примера",
     examples: [
-      { kind: "video", src: V("BigBuckBunny"), poster: imgDragon, caption: "Мультик «Big Buck Bunny» — добрый кролик" },
-      { kind: "video", src: V("ElephantsDream"), poster: imgCastle, caption: "Анимация «Elephants Dream»" },
-      { kind: "video", src: V("ForBiggerJoyrides"), poster: imgRobotPuppy, caption: "Весёлая поездка — короткий ролик" },
-      { kind: "video", src: V("ForBiggerEscapes"), poster: imgIcecreamCity, caption: "Динамичная сценка" },
+      {
+        kind: "video",
+        src: LV("neuro-video-dragon-book.mp4"),
+        poster: LV("neuro-video-dragon-book.jpg"),
+        caption: "Дракончик и книга идей",
+      },
+      {
+        kind: "video",
+        src: LV("neuro-video-robot-painter.mp4"),
+        poster: LV("neuro-video-robot-painter.jpg"),
+        caption: "Робот-художник рисует мечту",
+      },
+      {
+        kind: "video",
+        src: LV("neuro-video-prompt-magic.mp4"),
+        poster: LV("neuro-video-prompt-magic.jpg"),
+        caption: "Магия хорошего промпта",
+      },
+      {
+        kind: "video",
+        src: LV("neuro-video-website-garden.mp4"),
+        poster: LV("neuro-video-website-garden.jpg"),
+        caption: "Сайт-сад для школьного проекта",
+      },
     ],
   },
   {
