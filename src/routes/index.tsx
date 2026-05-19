@@ -726,8 +726,19 @@ function PromptPractice() {
 /* ───────────────────────────── Examples grid ───────────────────────────── */
 
 function ExamplesGrid({ items }: { items: ExampleItem[] }) {
+  const [autoLoop, setAutoLoop] = useState(true);
   return (
-    <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+    <div className="space-y-3">
+      <label className="inline-flex cursor-pointer items-center gap-2 rounded-full bg-white/80 px-3 py-1.5 text-xs font-bold text-kid-purple shadow-sm ring-1 ring-foreground/5 sm:text-sm">
+        <input
+          type="checkbox"
+          checked={autoLoop}
+          onChange={(e) => setAutoLoop(e.target.checked)}
+          className="h-4 w-4 accent-kid-pink"
+        />
+        🔁 Автоповтор видео
+      </label>
+      <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
       {items.map((it, i) => (
         <figure
           key={i}
@@ -743,10 +754,11 @@ function ExamplesGrid({ items }: { items: ExampleItem[] }) {
               />
             ) : (
               <video
+                key={autoLoop ? "loop" : "once"}
                 src={it.src}
                 poster={it.poster}
                 controls
-                loop
+                loop={autoLoop}
                 playsInline
                 preload="metadata"
                 onLoadedMetadata={(e) => {
@@ -764,6 +776,7 @@ function ExamplesGrid({ items }: { items: ExampleItem[] }) {
           </figcaption>
         </figure>
       ))}
+      </div>
     </div>
   );
 }
