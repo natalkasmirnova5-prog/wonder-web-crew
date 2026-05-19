@@ -815,7 +815,7 @@ function AnimatedImage({ src, alt, motion, decor }: { src: string; alt: string; 
         src={src}
         alt={alt}
         loading="lazy"
-        className={`h-full w-full object-cover transition-opacity duration-700 ${visible ? "opacity-100" : "opacity-0"} ${visible && motion ? motion : ""}`}
+        className={`h-full w-full object-contain transition-opacity duration-700 ${visible ? "opacity-100" : "opacity-0"} ${visible && motion ? motion : ""}`}
       />
       {visible && decor === "wings" && (
         <div className="pointer-events-none absolute inset-0 overflow-hidden" aria-hidden>
