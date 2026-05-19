@@ -258,26 +258,22 @@ const BLOCKS: Block[] = [
     examples: [
       {
         kind: "video",
-        src: ngDragon.url,
-        poster: LV("nc-dragon.jpg"),
+        src: `${ngDragon.url}#t=1.2`,
         caption: "Дракончик машет крылышками",
       },
       {
         kind: "video",
-        src: ngRobotArtist.url,
-        poster: LV("nc-robot-artist.jpg"),
+        src: `${ngRobotArtist.url}#t=1.2`,
         caption: "Робот-художник рисует мечту",
       },
       {
         kind: "video",
-        src: ngCatSpace.url,
-        poster: LV("nc-cat-space.jpg"),
+        src: `${ngCatSpace.url}#t=1.2`,
         caption: "Котик-космонавт в путешествии",
       },
       {
         kind: "video",
-        src: ngCastle.url,
-        poster: LV("nc-castle.jpg"),
+        src: `${ngCastle.url}#t=1.2`,
         caption: "Волшебный замок оживает",
       },
     ],
