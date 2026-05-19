@@ -32,10 +32,10 @@ import imgDragon from "@/assets/ex-dragon.jpg";
 import imgIcecreamCity from "@/assets/ex-icecream-city.jpg";
 import imgRobotPuppy from "@/assets/ex-robot-puppy.jpg";
 import imgKidsAi from "@/assets/ex-kids-ai.jpg";
-import ngCatSpace from "../../public/videos/ng-cat-space.mp4.asset.json";
-import ngCastle from "../../public/videos/ng-castle.mp4.asset.json";
-import ngRobotArtist from "../../public/videos/ng-robot-artist.mp4.asset.json";
-import ngDragon from "../../public/videos/ng-dragon.mp4.asset.json";
+const ngCatSpace = { url: "/videos/ng-cat-space-v2.mp4" };
+const ngCastle = { url: "/videos/ng-castle-v2.mp4" };
+const ngRobotArtist = { url: "/videos/ng-robot-artist-v2.mp4" };
+const ngDragon = { url: "/videos/ng-dragon-v2.mp4" };
 const eduWhatIsAi = { url: "/videos/edu-what-is-ai-v5.mp4" };
 const eduHowToAsk = { url: "/videos/edu-how-to-ask-v5.mp4" };
 const eduImage = { url: "/videos/edu-image-v5.mp4" };
@@ -258,22 +258,22 @@ const BLOCKS: Block[] = [
     examples: [
       {
         kind: "video",
-        src: `${ngDragon.url}#t=1.2`,
+        src: ngDragon.url,
         caption: "Дракончик машет крылышками",
       },
       {
         kind: "video",
-        src: `${ngRobotArtist.url}#t=1.2`,
+        src: ngRobotArtist.url,
         caption: "Робот-художник рисует мечту",
       },
       {
         kind: "video",
-        src: `${ngCatSpace.url}#t=1.2`,
+        src: ngCatSpace.url,
         caption: "Котик-космонавт в путешествии",
       },
       {
         kind: "video",
-        src: `${ngCastle.url}#t=1.2`,
+        src: ngCastle.url,
         caption: "Волшебный замок оживает",
       },
     ],
