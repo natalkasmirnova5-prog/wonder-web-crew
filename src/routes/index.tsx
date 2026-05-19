@@ -25,6 +25,10 @@ import {
 } from "lucide-react";
 import robot1 from "@/assets/robot1.png";
 import robot2 from "@/assets/robot2.png";
+import imgCatSpace from "@/assets/ex-cat-space.jpg";
+import imgCastle from "@/assets/ex-castle.jpg";
+import imgRobotArtist from "@/assets/ex-robot-artist.jpg";
+import imgDragon from "@/assets/ex-dragon.jpg";
 import imgIcecreamCity from "@/assets/ex-icecream-city.jpg";
 import imgRobotPuppy from "@/assets/ex-robot-puppy.jpg";
 import imgKidsAi from "@/assets/ex-kids-ai.jpg";
