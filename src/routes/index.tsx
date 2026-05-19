@@ -28,7 +28,6 @@ import imgCatSpace from "@/assets/ex-cat-space.jpg";
 import imgCastle from "@/assets/ex-castle.jpg";
 import imgRobotArtist from "@/assets/ex-robot-artist.jpg";
 import imgDragon from "@/assets/ex-dragon.jpg";
-import imgDragonPizza from "@/assets/ex-dragon-pizza.jpg";
 import imgIcecreamCity from "@/assets/ex-icecream-city.jpg";
 import imgRobotPuppy from "@/assets/ex-robot-puppy.jpg";
 import imgKidsAi from "@/assets/ex-kids-ai.jpg";
@@ -140,12 +139,32 @@ const BLOCKS: Block[] = [
     ],
     outro: "Чем больше деталей — тем круче результат. Не бойся фантазировать!",
     cta: "Посмотреть примеры промптов",
-    examplesTitle: "Примеры удачных промптов",
+    examplesTitle: "Обучающие видео по всем видам генераций",
     examples: [
-      { kind: "image", src: imgDragonPizza, caption: "«Дракон-повар печёт пиццу»" },
-      { kind: "image", src: imgCatSpace, caption: "«Котёнок-астронавт на радуге»" },
-      { kind: "image", src: imgIcecreamCity, caption: "«Город из мороженого ночью»" },
-      { kind: "image", src: imgRobotPuppy, caption: "«Робот играет с щенком в лего»" },
+      {
+        kind: "video",
+        src: LV("edu-what-is-ai.mp4"),
+        poster: LV("edu-what-is-ai.jpg"),
+        caption: "Что такое нейросеть",
+      },
+      {
+        kind: "video",
+        src: LV("edu-how-to-ask.mp4"),
+        poster: LV("edu-how-to-ask.jpg"),
+        caption: "Как правильно попросить",
+      },
+      {
+        kind: "video",
+        src: LV("edu-image.mp4"),
+        poster: LV("edu-image.jpg"),
+        caption: "Создаём картинку",
+      },
+      {
+        kind: "video",
+        src: LV("edu-video-site.mp4"),
+        poster: LV("edu-video-site.jpg"),
+        caption: "Видео и сайты с нейросетью",
+      },
     ],
   },
   {
@@ -173,12 +192,32 @@ const BLOCKS: Block[] = [
     ],
     outro: "Если любишь рисовать и придумывать — это твоя суперсила!",
     cta: "Смотреть нейроизображения",
-    examplesTitle: "Нейроизображения — 4 примера",
+    examplesTitle: "Нейроизображения оживают — 4 видео",
     examples: [
-      { kind: "image", src: imgCatSpace, caption: "Котёнок-астронавт" },
-      { kind: "image", src: imgCastle, caption: "Сказочный замок на облаке" },
-      { kind: "image", src: imgRobotArtist, caption: "Робот-художник" },
-      { kind: "image", src: imgDragon, caption: "Дракончик в волшебном лесу" },
+      {
+        kind: "video",
+        src: LV("nc-cat-space.mp4"),
+        poster: LV("nc-cat-space.jpg"),
+        caption: "Котёнок-астронавт",
+      },
+      {
+        kind: "video",
+        src: LV("nc-castle.mp4"),
+        poster: LV("nc-castle.jpg"),
+        caption: "Сказочный замок на облаке",
+      },
+      {
+        kind: "video",
+        src: LV("nc-robot-artist.mp4"),
+        poster: LV("nc-robot-artist.jpg"),
+        caption: "Робот-художник",
+      },
+      {
+        kind: "video",
+        src: LV("nc-dragon.mp4"),
+        poster: LV("nc-dragon.jpg"),
+        caption: "Добрый дракончик",
+      },
     ],
   },
   {
@@ -352,12 +391,12 @@ function Index() {
       <img
         src={dragonBlue}
         alt="Маленький голубой дракончик"
-        className="pointer-events-none absolute left-2 top-[58%] z-10 w-24 sm:left-6 sm:top-[40%] sm:w-36 md:w-44 animate-dance drop-shadow-2xl"
+        className="pointer-events-none absolute left-3 top-[68%] z-10 w-24 sm:left-8 sm:top-[58%] sm:w-36 md:w-44 animate-wingflap-l drop-shadow-2xl"
       />
       <img
         src={dragonPeach}
         alt="Маленький персиковый дракончик"
-        className="pointer-events-none absolute right-2 top-[60%] z-10 w-24 sm:right-6 sm:top-[42%] sm:w-36 md:w-44 animate-jiggle drop-shadow-2xl"
+        className="pointer-events-none absolute right-3 top-[70%] z-10 w-24 sm:right-8 sm:top-[60%] sm:w-36 md:w-44 animate-wingflap-r drop-shadow-2xl"
       />
 
       {/* Robots — placed lower so they never cover the title; original soft float animations */}
@@ -418,6 +457,7 @@ function Index() {
               <PlayCircle className="h-5 w-5" />
               Режим слайдов
             </button>
+            <HeroMusicToggle />
           </div>
         </header>
 
@@ -437,7 +477,7 @@ function Index() {
 
       {/* Block details dialog */}
       <Dialog open={!!active} onOpenChange={(o) => !o && setOpenId(null)}>
-        <DialogContent className="max-h-[88vh] w-[94vw] max-w-lg overflow-y-auto overflow-x-hidden border-0 bg-white/95 p-0 sm:rounded-3xl">
+        <DialogContent className="no-scrollbar max-h-[92vh] w-[94vw] max-w-xl overflow-y-auto overflow-x-hidden border-0 bg-white/95 p-0 sm:rounded-3xl">
           {active && (
             <div>
               <div className={`${active.gradient} px-5 py-6 sm:px-7 sm:py-7`}>
@@ -477,6 +517,16 @@ function Index() {
 
                 <div className="rounded-2xl bg-gradient-sky px-5 py-3 text-center">
                   <p className="text-sm font-bold text-kid-purple sm:text-base">{active.outro}</p>
+                  {active.id === "outro" && (
+                    <a
+                      href="https://chat.qwen.ai"
+                      target="_blank"
+                      rel="noreferrer noopener"
+                      className="mt-3 inline-flex items-center gap-2 rounded-full bg-white px-5 py-2 text-sm font-extrabold text-kid-purple shadow-pop ring-2 ring-kid-pink/40 transition-transform hover:scale-105 active:scale-95 sm:text-base"
+                    >
+                      ✨ Открыть chat.qwen.ai →
+                    </a>
+                  )}
                 </div>
                 <button
                   onClick={() => setExampleOpen(true)}
@@ -494,7 +544,7 @@ function Index() {
 
       {/* Examples gallery */}
       <Dialog open={exampleOpen} onOpenChange={setExampleOpen}>
-        <DialogContent className="max-h-[90vh] w-[95vw] max-w-3xl overflow-y-auto overflow-x-hidden border-0 bg-white/95 sm:rounded-3xl">
+        <DialogContent className="no-scrollbar max-h-[92vh] w-[95vw] max-w-3xl overflow-y-auto overflow-x-hidden border-0 bg-white/95 sm:rounded-3xl">
           <DialogHeader>
             <DialogTitle className="text-2xl text-kid-purple">
               {active?.examplesTitle ?? "Примеры"}
@@ -717,6 +767,27 @@ function MusicPlayer() {
   );
 }
 
+function HeroMusicToggle() {
+  const [muted, setMuted] = useState(false);
+  useEffect(() => {
+    setMuted(isMusicMuted());
+  }, []);
+  return (
+    <button
+      onClick={() => {
+        const next = !muted;
+        setMuted(next);
+        setMusicMuted(next);
+        if (!next) startMusic();
+      }}
+      className="inline-flex items-center gap-2 rounded-2xl bg-white px-5 py-3 font-bold text-kid-purple shadow-pop ring-2 ring-kid-pink/40 transition-transform hover:scale-105 active:scale-95"
+    >
+      {muted ? <VolumeX className="h-5 w-5" /> : <Music className="h-5 w-5" />}
+      {muted ? "Включить звук" : "Выключить звук"}
+    </button>
+  );
+}
+
 function DecorBackground() {
   return (
     <div aria-hidden className="pointer-events-none absolute inset-0 z-0 overflow-hidden">
@@ -821,6 +892,16 @@ function SlideShow({
 
           <div className="mt-5 rounded-2xl bg-gradient-sky px-4 py-3 text-center">
             <p className="text-sm font-bold text-kid-purple sm:text-base">{b.outro}</p>
+            {b.id === "outro" && (
+              <a
+                href="https://chat.qwen.ai"
+                target="_blank"
+                rel="noreferrer noopener"
+                className="mt-3 inline-flex items-center gap-2 rounded-full bg-white px-5 py-2 text-sm font-extrabold text-kid-purple shadow-pop ring-2 ring-kid-pink/40 transition-transform hover:scale-105 active:scale-95 sm:text-base"
+              >
+                ✨ Открыть chat.qwen.ai →
+              </a>
+            )}
           </div>
 
           <button
