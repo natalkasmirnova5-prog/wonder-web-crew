@@ -33,10 +33,10 @@ import ngCatSpace from "../../public/videos/ng-cat-space.mp4.asset.json";
 import ngCastle from "../../public/videos/ng-castle.mp4.asset.json";
 import ngRobotArtist from "../../public/videos/ng-robot-artist.mp4.asset.json";
 import ngDragon from "../../public/videos/ng-dragon.mp4.asset.json";
-import eduWhatIsAi from "../../public/videos/edu-what-is-ai-v3.mp4.asset.json";
-import eduHowToAsk from "../../public/videos/edu-how-to-ask-v3.mp4.asset.json";
-import eduImage from "../../public/videos/edu-image-v3.mp4.asset.json";
-import eduVideoSite from "../../public/videos/edu-video-site-v3.mp4.asset.json";
+import eduWhatIsAi from "../../public/videos/edu-what-is-ai-v4.mp4.asset.json";
+import eduHowToAsk from "../../public/videos/edu-how-to-ask-v4.mp4.asset.json";
+import eduImage from "../../public/videos/edu-image-v4.mp4.asset.json";
+import eduVideoSite from "../../public/videos/edu-video-site-v4.mp4.asset.json";
 import {
   playClick,
   startMusic,
@@ -776,7 +776,7 @@ function ExamplesGrid({ items }: { items: ExampleItem[] }) {
       {items.map((it, i) => (
         <figure
           key={i}
-          className="overflow-hidden rounded-2xl bg-muted/40 shadow-pop ring-1 ring-foreground/5"
+          className="flex flex-col overflow-hidden rounded-2xl bg-muted/40 shadow-pop ring-1 ring-foreground/5"
         >
           <div className="relative w-full overflow-hidden bg-gradient-sky" style={{ aspectRatio: "4 / 3" }}>
             {it.kind === "image" ? (
@@ -799,6 +799,10 @@ function ExamplesGrid({ items }: { items: ExampleItem[] }) {
                 loop={autoLoop}
                 playsInline
                 preload="metadata"
+                onClick={(e) => {
+                  const v = e.currentTarget as HTMLVideoElement;
+                  if (v.paused) void v.play().catch(() => {});
+                }}
                 onLoadedMetadata={(e) => {
                   (e.currentTarget as HTMLVideoElement).volume = volume;
                 }}
@@ -809,7 +813,7 @@ function ExamplesGrid({ items }: { items: ExampleItem[] }) {
               />
             )}
           </div>
-          <figcaption className="px-4 py-3 text-sm font-bold text-kid-purple">
+          <figcaption className="block w-full whitespace-normal break-words px-4 py-3 text-center text-sm font-bold leading-snug text-kid-purple sm:text-base">
             {it.caption}
           </figcaption>
         </figure>
