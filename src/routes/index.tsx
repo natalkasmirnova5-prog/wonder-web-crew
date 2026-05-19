@@ -740,10 +740,12 @@ function ExamplesGrid({ items }: { items: ExampleItem[] }) {
   const [autoLoop, setAutoLoop] = useState(true);
   const [volume, setVolume] = useState(0.25);
   const [muted, setMuted] = useState(false);
+  const hasVideo = items.some((it) => it.kind === "video");
 
   return (
     <div className="space-y-3">
       <div className="flex flex-wrap items-center gap-3">
+        {hasVideo && (
         <label className="inline-flex cursor-pointer items-center gap-2 rounded-full bg-white/80 px-3 py-1.5 text-xs font-bold text-kid-purple shadow-sm ring-1 ring-foreground/5 sm:text-sm">
           <input
             type="checkbox"
@@ -753,6 +755,8 @@ function ExamplesGrid({ items }: { items: ExampleItem[] }) {
           />
           🔁 Автоповтор
         </label>
+        )}
+        {hasVideo && (
         <label className="inline-flex items-center gap-2 rounded-full bg-white/80 px-3 py-1.5 text-xs font-bold text-kid-purple shadow-sm ring-1 ring-foreground/5 sm:text-sm">
           🔊
           <input
@@ -766,6 +770,7 @@ function ExamplesGrid({ items }: { items: ExampleItem[] }) {
             aria-label="Громкость видео"
           />
         </label>
+        )}
       </div>
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
       {items.map((it, i) => (
