@@ -6,10 +6,7 @@ import { fileURLToPath } from "url";
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
 const compositions = [
-  { id: "what-is-ai", out: "edu-what-is-ai-v5.mp4" },
-  { id: "how-to-ask", out: "edu-how-to-ask-v5.mp4" },
-  { id: "image", out: "edu-image-v5.mp4" },
-  { id: "video-site", out: "edu-video-site-v5.mp4" },
+  { id: "how-to-ask", out: "edu-how-to-ask-v6.mp4" },
 ];
 
 const bundled = await bundle({
