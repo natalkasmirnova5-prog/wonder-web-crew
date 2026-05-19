@@ -1252,11 +1252,13 @@ function SlideShow({
       </div>
 
       <Dialog open={exampleOpen} onOpenChange={setExampleOpen}>
-        <DialogContent className="max-h-[90vh] w-[95vw] max-w-3xl overflow-y-auto overflow-x-hidden border-0 bg-white/95 sm:rounded-3xl">
+        <DialogContent className="flex max-h-[95vh] w-[96vw] max-w-5xl flex-col overflow-hidden border-0 bg-white/95 p-4 sm:rounded-3xl sm:p-6">
           <DialogHeader>
             <DialogTitle className="text-2xl text-kid-purple">{b.examplesTitle}</DialogTitle>
           </DialogHeader>
-          <ExamplesGrid items={b.examples} />
+          <div className="examples-scroll -mr-2 flex-1 overflow-y-auto overflow-x-hidden pr-2">
+            <ExamplesGrid items={b.examples} />
+          </div>
         </DialogContent>
       </Dialog>
     </div>
