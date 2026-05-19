@@ -803,6 +803,63 @@ function ExampleCard({
   muted: boolean;
   onToggleMute: () => void;
 }) {
+  return <ExampleCardInner item={item} autoLoop={autoLoop} volume={volume} muted={muted} onToggleMute={onToggleMute} />;
+}
+
+function AnimatedImage({ src, alt, motion }: { src: string; alt: string; motion?: string }) {
+  const ref = useRef<HTMLImageElement | null>(null);
+  const [boop, setBoop] = useState(0);
+  const [visible, setVisible] = useState(false);
+
+  useEffect(() => {
+    const el = ref.current;
+    if (!el || typeof IntersectionObserver === "undefined") {
+      setVisible(true);
+      return;
+    }
+    const io = new IntersectionObserver(
+      (entries) => {
+        for (const e of entries) if (e.isIntersecting) setVisible(true);
+      },
+      { threshold: 0.2 },
+    );
+    io.observe(el);
+    return () => io.disconnect();
+  }, []);
+
+  return (
+    <button
+      type="button"
+      onClick={() => setBoop((n) => n + 1)}
+      aria-label={alt}
+      className="absolute inset-0 grid place-items-center cursor-pointer select-none focus:outline-none"
+    >
+      <img
+        ref={ref}
+        key={`boop-${boop}`}
+        src={src}
+        alt={alt}
+        loading="lazy"
+        className={`h-full w-full object-contain transition-transform ${visible ? motion ?? "animate-float" : "opacity-0"} ${visible ? "animate-pop" : ""}`}
+        style={{ animationDelay: "0s" }}
+      />
+    </button>
+  );
+}
+
+function ExampleCardInner({
+  item,
+  autoLoop,
+  volume,
+  muted,
+  onToggleMute,
+}: {
+  item: ExampleItem;
+  autoLoop: boolean;
+  volume: number;
+  muted: boolean;
+  onToggleMute: () => void;
+}) {
   const videoRef = useRef<HTMLVideoElement | null>(null);
   const wrapRef = useRef<HTMLDivElement | null>(null);
   const [playing, setPlaying] = useState(false);
