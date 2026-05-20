@@ -156,7 +156,7 @@ const TUNES: Tune[] = [
   ]},
 ];
 
-type ActiveTune = { gain: GainNode; timer: number | null; on: boolean; muted: boolean; idx: number; nodes: OscillatorNode[] };
+type ActiveTune = { gain: GainNode; timer: number | null; on: boolean; muted: boolean; volume: number; idx: number; nodes: OscillatorNode[] };
 const activeTunes = new Map<string, ActiveTune>();
 
 function hashId(id: string): number {
@@ -199,20 +199,21 @@ function loopTune(id: string) {
   state.timer = window.setTimeout(() => loopTune(id), total * 1000);
 }
 
-export function startVideoTune(id: string, muted = false) {
+export function startVideoTune(id: string, muted = false, volume = 1) {
   const ac = getCtx();
   if (!ac) return;
   let state = activeTunes.get(id);
   if (state?.on) return;
   if (!state) {
     const gain = ac.createGain();
-    gain.gain.value = muted ? 0 : 1;
+    gain.gain.value = muted ? 0 : volume;
     gain.connect(ac.destination);
-    state = { gain, timer: null, on: false, muted, idx: hashId(id) % TUNES.length, nodes: [] };
+    state = { gain, timer: null, on: false, muted, volume, idx: hashId(id) % TUNES.length, nodes: [] };
     activeTunes.set(id, state);
   }
   state.muted = muted;
-  state.gain.gain.value = muted ? 0 : 1;
+  state.volume = volume;
+  state.gain.gain.value = muted ? 0 : volume;
   state.on = true;
   loopTune(id);
 }
@@ -240,5 +241,12 @@ export function setVideoTuneMuted(id: string, m: boolean) {
   const state = activeTunes.get(id);
   if (!state) return;
   state.muted = m;
-  state.gain.gain.value = m ? 0 : 1;
+  state.gain.gain.value = m ? 0 : state.volume;
+}
+
+export function setVideoTuneVolume(id: string, v: number) {
+  const state = activeTunes.get(id);
+  if (!state) return;
+  state.volume = v;
+  if (!state.muted) state.gain.gain.value = v;
 }

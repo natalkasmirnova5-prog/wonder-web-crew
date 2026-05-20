@@ -55,6 +55,7 @@ import {
   startVideoTune,
   stopVideoTune,
   setVideoTuneMuted,
+  setVideoTuneVolume,
 } from "@/lib/sound";
 
 export const Route = createFileRoute("/")({
@@ -911,8 +912,11 @@ function ExampleCardInner({
       v.muted = muted;
       v.playbackRate = playbackRate;
     }
-    if (tuneId) setVideoTuneMuted(tuneId, muted);
-  }, [volume, muted, playbackRate]);
+    if (tuneId) {
+      setVideoTuneMuted(tuneId, muted);
+      setVideoTuneVolume(tuneId, volume);
+    }
+  }, [volume, muted, playbackRate, tuneId]);
 
   useEffect(() => {
     return () => {
@@ -975,8 +979,8 @@ function ExampleCardInner({
                   if (video !== e.currentTarget && !video.paused) video.pause();
                 });
                 setPlaying(true);
-                if (!keepMusic) duckMusic(true);
-                if (tuneId) startVideoTune(tuneId, muted);
+                duckMusic(true);
+                if (tuneId) startVideoTune(tuneId, muted, volume);
               }}
               onPause={() => {
                 setPlaying(false);
