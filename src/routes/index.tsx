@@ -943,14 +943,13 @@ function ExampleCardInner({
         ) : (
           <>
             <video
-              key={autoLoop ? "loop" : "once"}
               ref={videoRef}
               src={item.src}
               poster={item.poster}
               controls
               loop={autoLoop}
               playsInline
-              preload="metadata"
+              preload="none"
               muted={muted}
               onClick={togglePlay}
               onLoadedMetadata={(e) => {
