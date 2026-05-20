@@ -156,7 +156,7 @@ const TUNES: Tune[] = [
   ]},
 ];
 
-type ActiveTune = { gain: GainNode; timer: number | null; on: boolean; muted: boolean; idx: number };
+type ActiveTune = { gain: GainNode; timer: number | null; on: boolean; muted: boolean; idx: number; nodes: OscillatorNode[] };
 const activeTunes = new Map<string, ActiveTune>();
 
 function hashId(id: string): number {
@@ -176,6 +176,7 @@ function scheduleTuneNote(ac: AudioContext, gain: GainNode, type: OscillatorType
   o.connect(g).connect(gain);
   o.start(when);
   o.stop(when + dur + 0.05);
+  return o;
 }
 
 function loopTune(id: string) {
@@ -187,7 +188,11 @@ function loopTune(id: string) {
   let total = 0;
   for (const [f, beats] of tune.notes) {
     const d = beats * tune.beat;
-    scheduleTuneNote(ac, state.gain, tune.type, f, t, d * 0.9, tune.vol);
+    const node = scheduleTuneNote(ac, state.gain, tune.type, f, t, d * 0.9, tune.vol);
+    node.onended = () => {
+      state.nodes = state.nodes.filter((n) => n !== node);
+    };
+    state.nodes.push(node);
     t += d;
     total += d;
   }
@@ -203,7 +208,7 @@ export function startVideoTune(id: string, muted = false) {
     const gain = ac.createGain();
     gain.gain.value = muted ? 0 : 1;
     gain.connect(ac.destination);
-    state = { gain, timer: null, on: false, muted, idx: hashId(id) % TUNES.length };
+    state = { gain, timer: null, on: false, muted, idx: hashId(id) % TUNES.length, nodes: [] };
     activeTunes.set(id, state);
   }
   state.muted = muted;
@@ -220,6 +225,15 @@ export function stopVideoTune(id: string) {
     clearTimeout(state.timer);
     state.timer = null;
   }
+  state.gain.gain.value = 0;
+  state.nodes.forEach((node) => {
+    try {
+      node.stop();
+    } catch {
+      // Already stopped.
+    }
+  });
+  state.nodes = [];
 }
 
 export function setVideoTuneMuted(id: string, m: boolean) {
