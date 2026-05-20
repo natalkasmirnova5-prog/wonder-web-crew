@@ -52,6 +52,9 @@ import {
   duckMusic,
   setMusicMuted,
   isMusicMuted,
+  startVideoTune,
+  stopVideoTune,
+  setVideoTuneMuted,
 } from "@/lib/sound";
 
 export const Route = createFileRoute("/")({
