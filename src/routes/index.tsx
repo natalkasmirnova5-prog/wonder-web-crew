@@ -55,6 +55,7 @@ import {
   startVideoTune,
   stopVideoTune,
   setVideoTuneMuted,
+  setVideoTuneVolume,
 } from "@/lib/sound";
 
 export const Route = createFileRoute("/")({
