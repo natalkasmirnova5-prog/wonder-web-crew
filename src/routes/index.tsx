@@ -587,6 +587,9 @@ function PromptPractice() {
   const [style, setStyle] = useState("в стиле Pixar");
   const [result, setResult] = useState<string | null>(null);
   const [history, setHistory] = useState<string[]>([]);
+  const [image, setImage] = useState<string | null>(null);
+  const [imgLoading, setImgLoading] = useState(false);
+  const [imgError, setImgError] = useState<string | null>(null);
 
   const GOAL = 5;
   const made = history.length;
@@ -595,12 +598,34 @@ function PromptPractice() {
   const heroes = ["котёнок-астронавт", "дракончик", "робот-друг", "единорог", "пингвин-пират"];
   const places = ["на радуге", "в волшебном лесу", "на луне", "в городе из мороженого", "под водой"];
 
-  const generate = () => {
+  const generate = async () => {
     const h = hero.trim() || heroes[Math.floor(Math.random() * heroes.length)];
     const p = place.trim() || places[Math.floor(Math.random() * places.length)];
     const prompt = `Нарисуй ${h}, который весело играет ${p}, ${style}, яркие краски, доброе настроение, большие глаза, мультяшный свет ✨`;
     setResult(prompt);
     setHistory((prev) => (prev[0] === prompt ? prev : [prompt, ...prev].slice(0, 10)));
+    setImage(null);
+    setImgError(null);
+    setImgLoading(true);
+    try {
+      const res = await fetch("/api/generate-image", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ prompt: `${h}, ${p}, ${style}. ${prompt}` }),
+      });
+      const data = (await res.json()) as { image?: string; error?: string };
+      if (!res.ok || !data.image) {
+        if (res.status === 429) setImgError("Слишком много запросов. Попробуй через минуту 💫");
+        else if (res.status === 402) setImgError("Закончились кредиты. Добавь их в настройках ✨");
+        else setImgError(data.error || "Не получилось нарисовать. Попробуй ещё раз 🎨");
+      } else {
+        setImage(data.image);
+      }
+    } catch {
+      setImgError("Сеть подвела. Попробуй ещё раз 🌈");
+    } finally {
+      setImgLoading(false);
+    }
   };
 
   const surprise = () => {
@@ -680,6 +705,34 @@ function PromptPractice() {
             Твой промпт ✨
           </div>
           <p className="text-sm font-semibold text-foreground sm:text-base">«{result}»</p>
+          <div className="mt-3">
+            {imgLoading && (
+              <div className="flex aspect-square w-full items-center justify-center rounded-2xl bg-gradient-to-br from-kid-pink/15 via-kid-purple/10 to-kid-blue/15 ring-2 ring-kid-pink/20 sm:aspect-[4/3]">
+                <div className="flex flex-col items-center gap-2 text-kid-purple">
+                  <Sparkles className="h-6 w-6 animate-pulse" />
+                  <span className="text-xs font-bold">Нейросеть рисует… ✨</span>
+                </div>
+              </div>
+            )}
+            {image && !imgLoading && (
+              <figure className="overflow-hidden rounded-2xl ring-2 ring-kid-pink/30 shadow-pop">
+                <img
+                  src={image}
+                  alt={result}
+                  loading="lazy"
+                  className="block h-auto w-full"
+                />
+                <figcaption className="bg-white/90 px-3 py-1.5 text-[11px] font-bold text-kid-purple">
+                  🎨 Готово! Нейросеть нарисовала по твоему промпту
+                </figcaption>
+              </figure>
+            )}
+            {imgError && !imgLoading && (
+              <p className="rounded-xl bg-kid-pink/10 px-3 py-2 text-xs font-bold text-kid-pink">
+                {imgError}
+              </p>
+            )}
+          </div>
         </div>
       )}
 
