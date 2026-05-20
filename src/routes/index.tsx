@@ -952,6 +952,7 @@ function ExampleCardInner({
                 const v = e.currentTarget;
                 v.volume = volume;
                 v.muted = muted;
+                v.playbackRate = playbackRate;
               }}
               onPlay={() => {
                 setPlaying(true);
