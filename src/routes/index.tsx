@@ -567,7 +567,7 @@ function Index() {
             </DialogTitle>
           </DialogHeader>
           <div className="examples-scroll -mr-2 flex-1 overflow-y-auto overflow-x-hidden pr-2">
-            {active && <ExamplesGrid items={active.examples} />}
+            {active && <ExamplesGrid items={active.examples} playbackRate={active.id === "prompt" ? 0.57 : 1} />}
           </div>
         </DialogContent>
       </Dialog>
@@ -736,7 +736,7 @@ function PromptPractice() {
 
 /* ───────────────────────────── Examples grid ───────────────────────────── */
 
-function ExamplesGrid({ items }: { items: ExampleItem[] }) {
+function ExamplesGrid({ items, playbackRate = 1 }: { items: ExampleItem[]; playbackRate?: number }) {
   const [autoLoop, setAutoLoop] = useState(true);
   const [volume, setVolume] = useState(0.25);
   const [muted, setMuted] = useState(false);
@@ -781,6 +781,7 @@ function ExamplesGrid({ items }: { items: ExampleItem[] }) {
           volume={volume}
           muted={muted}
           onToggleMute={() => setMuted((m) => !m)}
+          playbackRate={playbackRate}
         />
       ))}
       </div>
@@ -794,14 +795,16 @@ function ExampleCard({
   volume,
   muted,
   onToggleMute,
+  playbackRate,
 }: {
   item: ExampleItem;
   autoLoop: boolean;
   volume: number;
   muted: boolean;
   onToggleMute: () => void;
+  playbackRate?: number;
 }) {
-  return <ExampleCardInner item={item} autoLoop={autoLoop} volume={volume} muted={muted} onToggleMute={onToggleMute} />;
+  return <ExampleCardInner item={item} autoLoop={autoLoop} volume={volume} muted={muted} onToggleMute={onToggleMute} playbackRate={playbackRate} />;
 }
 
 function AnimatedImage({ src, alt, motion, decor }: { src: string; alt: string; motion?: string; decor?: "castle" | "space" | "paint" | "wings" }) {
@@ -879,12 +882,14 @@ function ExampleCardInner({
   volume,
   muted,
   onToggleMute,
+  playbackRate = 1,
 }: {
   item: ExampleItem;
   autoLoop: boolean;
   volume: number;
   muted: boolean;
   onToggleMute: () => void;
+  playbackRate?: number;
 }) {
   const videoRef = useRef<HTMLVideoElement | null>(null);
   const wrapRef = useRef<HTMLDivElement | null>(null);
@@ -895,8 +900,9 @@ function ExampleCardInner({
     if (v) {
       v.volume = volume;
       v.muted = muted;
+      v.playbackRate = playbackRate;
     }
-  }, [volume, muted]);
+  }, [volume, muted, playbackRate]);
 
   const togglePlay = () => {
     const v = videoRef.current;
@@ -946,6 +952,7 @@ function ExampleCardInner({
                 const v = e.currentTarget;
                 v.volume = volume;
                 v.muted = muted;
+                v.playbackRate = playbackRate;
               }}
               onPlay={() => {
                 setPlaying(true);
@@ -1277,7 +1284,7 @@ function SlideShow({
             <DialogTitle className="text-2xl text-kid-purple">{b.examplesTitle}</DialogTitle>
           </DialogHeader>
           <div className="examples-scroll -mr-2 flex-1 overflow-y-auto overflow-x-hidden pr-2">
-            <ExamplesGrid items={b.examples} />
+            <ExamplesGrid items={b.examples} playbackRate={b.id === "prompt" ? 0.57 : 1} />
           </div>
         </DialogContent>
       </Dialog>
