@@ -112,3 +112,119 @@ export function duckMusic(duck: boolean) {
   if (!musicGain) return;
   musicGain.gain.value = duck || musicMuted ? 0 : 0.12;
 }
+
+/* ───────────────── Per-video kid tunes ─────────────────
+ * A small library of gentle, cheerful melodies. Each video gets a stable
+ * tune chosen by id hash, so different videos play different music.
+ * Started on video play, stopped on pause/end. Honours per-tune muting.
+ */
+
+type Tune = { notes: Array<[number, number]>; beat: number; type: OscillatorType; vol: number };
+
+const TUNES: Tune[] = [
+  // 0 — Twinkle-style lullaby in C
+  { type: "triangle", beat: 0.45, vol: 0.14, notes: [
+    [523,1],[523,1],[784,1],[784,1],[880,1],[880,1],[784,2],
+    [698,1],[698,1],[659,1],[659,1],[587,1],[587,1],[523,2],
+  ]},
+  // 1 — Bouncy waltz in G
+  { type: "triangle", beat: 0.38, vol: 0.13, notes: [
+    [392,1],[494,1],[587,1],[494,1],[440,1],[523,1],[659,1],[523,1],
+    [392,1],[494,1],[587,2],[659,1],[587,1],[494,1],[392,2],
+  ]},
+  // 2 — Skipping tune in F
+  { type: "sine", beat: 0.34, vol: 0.15, notes: [
+    [349,1],[440,1],[523,1],[698,1],[523,1],[440,1],[349,2],
+    [392,1],[494,1],[587,1],[698,1],[587,1],[494,1],[392,2],
+  ]},
+  // 3 — Gentle music-box in D
+  { type: "triangle", beat: 0.5, vol: 0.12, notes: [
+    [587,1],[740,1],[880,1],[740,1],[659,1],[587,2],
+    [494,1],[587,1],[740,1],[587,1],[494,1],[440,2],
+    [587,1],[740,1],[880,2],[988,1],[880,1],[740,2],
+  ]},
+  // 4 — Playful march in A
+  { type: "square", beat: 0.3, vol: 0.09, notes: [
+    [440,1],[440,1],[554,1],[659,1],[554,1],[440,2],
+    [494,1],[494,1],[587,1],[740,1],[587,1],[494,2],
+    [440,1],[554,1],[659,1],[554,1],[440,2],[330,2],
+  ]},
+  // 5 — Dreamy lullaby in E
+  { type: "sine", beat: 0.55, vol: 0.13, notes: [
+    [330,1],[415,1],[494,1],[659,2],[494,1],[415,1],[330,2],
+    [370,1],[440,1],[554,1],[659,2],[554,1],[440,1],[370,2],
+  ]},
+];
+
+type ActiveTune = { gain: GainNode; timer: number | null; on: boolean; muted: boolean; idx: number };
+const activeTunes = new Map<string, ActiveTune>();
+
+function hashId(id: string): number {
+  let h = 0;
+  for (let i = 0; i < id.length; i++) h = (h * 31 + id.charCodeAt(i)) >>> 0;
+  return h;
+}
+
+function scheduleTuneNote(ac: AudioContext, gain: GainNode, type: OscillatorType, freq: number, when: number, dur: number, vol: number) {
+  const o = ac.createOscillator();
+  const g = ac.createGain();
+  o.type = type;
+  o.frequency.setValueAtTime(freq, when);
+  g.gain.setValueAtTime(0.0001, when);
+  g.gain.exponentialRampToValueAtTime(vol, when + 0.04);
+  g.gain.exponentialRampToValueAtTime(0.0001, when + dur);
+  o.connect(g).connect(gain);
+  o.start(when);
+  o.stop(when + dur + 0.05);
+}
+
+function loopTune(id: string) {
+  const ac = getCtx();
+  const state = activeTunes.get(id);
+  if (!ac || !state || !state.on) return;
+  const tune = TUNES[state.idx];
+  let t = ac.currentTime + 0.05;
+  let total = 0;
+  for (const [f, beats] of tune.notes) {
+    const d = beats * tune.beat;
+    scheduleTuneNote(ac, state.gain, tune.type, f, t, d * 0.9, tune.vol);
+    t += d;
+    total += d;
+  }
+  state.timer = window.setTimeout(() => loopTune(id), total * 1000);
+}
+
+export function startVideoTune(id: string, muted = false) {
+  const ac = getCtx();
+  if (!ac) return;
+  let state = activeTunes.get(id);
+  if (state?.on) return;
+  if (!state) {
+    const gain = ac.createGain();
+    gain.gain.value = muted ? 0 : 1;
+    gain.connect(ac.destination);
+    state = { gain, timer: null, on: false, muted, idx: hashId(id) % TUNES.length };
+    activeTunes.set(id, state);
+  }
+  state.muted = muted;
+  state.gain.gain.value = muted ? 0 : 1;
+  state.on = true;
+  loopTune(id);
+}
+
+export function stopVideoTune(id: string) {
+  const state = activeTunes.get(id);
+  if (!state) return;
+  state.on = false;
+  if (state.timer) {
+    clearTimeout(state.timer);
+    state.timer = null;
+  }
+}
+
+export function setVideoTuneMuted(id: string, m: boolean) {
+  const state = activeTunes.get(id);
+  if (!state) return;
+  state.muted = m;
+  state.gain.gain.value = m ? 0 : 1;
+}
