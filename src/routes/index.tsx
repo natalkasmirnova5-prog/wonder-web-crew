@@ -902,6 +902,7 @@ function ExampleCardInner({
   const videoRef = useRef<HTMLVideoElement | null>(null);
   const wrapRef = useRef<HTMLDivElement | null>(null);
   const [playing, setPlaying] = useState(false);
+  const tuneId = item.kind === "video" ? item.src : "";
 
   useEffect(() => {
     const v = videoRef.current;
@@ -910,7 +911,14 @@ function ExampleCardInner({
       v.muted = muted;
       v.playbackRate = playbackRate;
     }
+    if (tuneId) setVideoTuneMuted(tuneId, muted);
   }, [volume, muted, playbackRate]);
+
+  useEffect(() => {
+    return () => {
+      if (tuneId) stopVideoTune(tuneId);
+    };
+  }, [tuneId]);
 
   const togglePlay = () => {
     const v = videoRef.current;
@@ -964,14 +972,17 @@ function ExampleCardInner({
               onPlay={() => {
                 setPlaying(true);
                 if (!keepMusic) duckMusic(true);
+                if (tuneId) startVideoTune(tuneId, muted);
               }}
               onPause={() => {
                 setPlaying(false);
                 duckMusic(false);
+                if (tuneId) stopVideoTune(tuneId);
               }}
               onEnded={() => {
                 setPlaying(false);
                 duckMusic(false);
+                if (tuneId) stopVideoTune(tuneId);
               }}
               className="absolute inset-0 h-full w-full bg-black object-cover"
             />
