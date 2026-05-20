@@ -882,12 +882,14 @@ function ExampleCardInner({
   volume,
   muted,
   onToggleMute,
+  playbackRate = 1,
 }: {
   item: ExampleItem;
   autoLoop: boolean;
   volume: number;
   muted: boolean;
   onToggleMute: () => void;
+  playbackRate?: number;
 }) {
   const videoRef = useRef<HTMLVideoElement | null>(null);
   const wrapRef = useRef<HTMLDivElement | null>(null);
@@ -898,8 +900,9 @@ function ExampleCardInner({
     if (v) {
       v.volume = volume;
       v.muted = muted;
+      v.playbackRate = playbackRate;
     }
-  }, [volume, muted]);
+  }, [volume, muted, playbackRate]);
 
   const togglePlay = () => {
     const v = videoRef.current;
