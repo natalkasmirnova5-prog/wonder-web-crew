@@ -601,6 +601,14 @@ function PromptPractice() {
   const generate = async () => {
     const h = hero.trim() || heroes[Math.floor(Math.random() * heroes.length)];
     const p = place.trim() || places[Math.floor(Math.random() * places.length)];
+    const styleEn: Record<string, string> = {
+      "в стиле Pixar": "Pixar-style 3D cartoon render, soft pastel palette, cinematic lighting",
+      "акварель": "watercolor painting, soft washes, paper texture, hand-painted look, gentle brush strokes",
+      "мультик": "flat 2D cartoon illustration, bold outlines, bright saturated colors, simple shapes",
+      "комикс": "comic book illustration, ink outlines, halftone shading, dynamic pose, vibrant colors",
+      "3D-игрушка": "cute 3D toy figurine render, glossy plastic look, studio lighting, soft shadows",
+    };
+    const styleInstr = styleEn[style] ?? style;
     const prompt = `Нарисуй ${h}, который весело играет ${p}, ${style}, яркие краски, доброе настроение, большие глаза, мультяшный свет ✨`;
     setResult(prompt);
     setHistory((prev) => (prev[0] === prompt ? prev : [prompt, ...prev].slice(0, 10)));
@@ -608,10 +616,11 @@ function PromptPractice() {
     setImgError(null);
     setImgLoading(true);
     try {
+      const apiPrompt = `Art style (MUST follow exactly): ${styleInstr}. Subject: ${h} playing ${p}. ${prompt}`;
       const res = await fetch("/api/generate-image", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ prompt: `${h}, ${p}, ${style}. ${prompt}` }),
+        body: JSON.stringify({ prompt: apiPrompt }),
       });
       const data = (await res.json()) as { image?: string; error?: string };
       if (!res.ok || !data.image) {

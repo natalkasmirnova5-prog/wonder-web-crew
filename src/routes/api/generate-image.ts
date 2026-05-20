@@ -22,7 +22,7 @@ export const Route = createFileRoute("/api/generate-image")({
           }
 
           const stylePrefix =
-            "Children's illustration for ages 5-10, gentle Pixar-style 3D cartoon, soft pastel palette (pink, lavender, mint, cream, sky-blue), big friendly eyes, rounded shapes, warm magical lighting, sparkles, joyful and kind mood, high quality, no text, no letters, no watermarks, no distortions, accurate composition. ";
+            "Child-safe illustration for ages 5-10, kind and joyful mood, big friendly eyes, rounded shapes, warm magical lighting, high quality, accurate composition, no text, no letters, no watermarks, no distortions. Strictly follow the requested art style below. ";
 
           const res = await fetch("https://ai.gateway.lovable.dev/v1/chat/completions", {
             method: "POST",
