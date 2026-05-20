@@ -740,7 +740,7 @@ function PromptPractice() {
 /* ───────────────────────────── Examples grid ───────────────────────────── */
 
 function ExamplesGrid({ items, playbackRate = 1, keepMusic = false }: { items: ExampleItem[]; playbackRate?: number; keepMusic?: boolean }) {
-  const [autoLoop, setAutoLoop] = useState(true);
+  const [autoLoop, setAutoLoop] = useState(false);
   const [volume, setVolume] = useState(0.25);
   const [muted, setMuted] = useState(false);
   const hasVideo = items.some((it) => it.kind === "video");
@@ -959,6 +959,7 @@ function ExampleCardInner({
               poster={item.poster}
               controls
               loop={autoLoop}
+              autoPlay={false}
               playsInline
               preload="none"
               muted={muted}
@@ -969,7 +970,10 @@ function ExampleCardInner({
                 v.muted = muted;
                 v.playbackRate = playbackRate;
               }}
-              onPlay={() => {
+              onPlay={(e) => {
+                document.querySelectorAll<HTMLVideoElement>("video").forEach((video) => {
+                  if (video !== e.currentTarget && !video.paused) video.pause();
+                });
                 setPlaying(true);
                 if (!keepMusic) duckMusic(true);
                 if (tuneId) startVideoTune(tuneId, muted);
