@@ -940,7 +940,6 @@ function ExampleCardInner({
               loop={autoLoop}
               playsInline
               preload="metadata"
-              autoPlay
               muted={muted}
               onClick={togglePlay}
               onLoadedMetadata={(e) => {
