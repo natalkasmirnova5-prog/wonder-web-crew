@@ -1277,7 +1277,7 @@ function SlideShow({
             <DialogTitle className="text-2xl text-kid-purple">{b.examplesTitle}</DialogTitle>
           </DialogHeader>
           <div className="examples-scroll -mr-2 flex-1 overflow-y-auto overflow-x-hidden pr-2">
-            <ExamplesGrid items={b.examples} />
+            <ExamplesGrid items={b.examples} playbackRate={b.id === "prompt" ? 0.57 : 1} />
           </div>
         </DialogContent>
       </Dialog>
