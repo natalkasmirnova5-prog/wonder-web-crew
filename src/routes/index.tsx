@@ -567,7 +567,7 @@ function Index() {
             </DialogTitle>
           </DialogHeader>
           <div className="examples-scroll -mr-2 flex-1 overflow-y-auto overflow-x-hidden pr-2">
-            {active && <ExamplesGrid items={active.examples} playbackRate={active.id === "prompt" ? 0.57 : 1} />}
+            {active && <ExamplesGrid items={active.examples} playbackRate={active.id === "prompt" ? 0.57 : 1} keepMusic={active.id === "prompt"} />}
           </div>
         </DialogContent>
       </Dialog>
@@ -736,7 +736,7 @@ function PromptPractice() {
 
 /* ───────────────────────────── Examples grid ───────────────────────────── */
 
-function ExamplesGrid({ items, playbackRate = 1 }: { items: ExampleItem[]; playbackRate?: number }) {
+function ExamplesGrid({ items, playbackRate = 1, keepMusic = false }: { items: ExampleItem[]; playbackRate?: number; keepMusic?: boolean }) {
   const [autoLoop, setAutoLoop] = useState(true);
   const [volume, setVolume] = useState(0.25);
   const [muted, setMuted] = useState(false);
@@ -782,6 +782,7 @@ function ExamplesGrid({ items, playbackRate = 1 }: { items: ExampleItem[]; playb
           muted={muted}
           onToggleMute={() => setMuted((m) => !m)}
           playbackRate={playbackRate}
+          keepMusic={keepMusic}
         />
       ))}
       </div>
@@ -796,6 +797,7 @@ function ExampleCard({
   muted,
   onToggleMute,
   playbackRate,
+  keepMusic,
 }: {
   item: ExampleItem;
   autoLoop: boolean;
@@ -803,8 +805,9 @@ function ExampleCard({
   muted: boolean;
   onToggleMute: () => void;
   playbackRate?: number;
+  keepMusic?: boolean;
 }) {
-  return <ExampleCardInner item={item} autoLoop={autoLoop} volume={volume} muted={muted} onToggleMute={onToggleMute} playbackRate={playbackRate} />;
+  return <ExampleCardInner item={item} autoLoop={autoLoop} volume={volume} muted={muted} onToggleMute={onToggleMute} playbackRate={playbackRate} keepMusic={keepMusic} />;
 }
 
 function AnimatedImage({ src, alt, motion, decor }: { src: string; alt: string; motion?: string; decor?: "castle" | "space" | "paint" | "wings" }) {
@@ -883,6 +886,7 @@ function ExampleCardInner({
   muted,
   onToggleMute,
   playbackRate = 1,
+  keepMusic = false,
 }: {
   item: ExampleItem;
   autoLoop: boolean;
@@ -890,6 +894,7 @@ function ExampleCardInner({
   muted: boolean;
   onToggleMute: () => void;
   playbackRate?: number;
+  keepMusic?: boolean;
 }) {
   const videoRef = useRef<HTMLVideoElement | null>(null);
   const wrapRef = useRef<HTMLDivElement | null>(null);
@@ -956,7 +961,7 @@ function ExampleCardInner({
               }}
               onPlay={() => {
                 setPlaying(true);
-                duckMusic(true);
+                if (!keepMusic) duckMusic(true);
               }}
               onPause={() => {
                 setPlaying(false);
@@ -1284,7 +1289,7 @@ function SlideShow({
             <DialogTitle className="text-2xl text-kid-purple">{b.examplesTitle}</DialogTitle>
           </DialogHeader>
           <div className="examples-scroll -mr-2 flex-1 overflow-y-auto overflow-x-hidden pr-2">
-            <ExamplesGrid items={b.examples} playbackRate={b.id === "prompt" ? 0.57 : 1} />
+            <ExamplesGrid items={b.examples} playbackRate={b.id === "prompt" ? 0.57 : 1} keepMusic={b.id === "prompt"} />
           </div>
         </DialogContent>
       </Dialog>
