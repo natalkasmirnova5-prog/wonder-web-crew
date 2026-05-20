@@ -22,7 +22,7 @@ export const Route = createFileRoute("/api/generate-image")({
           }
 
           const stylePrefix =
-            "Child-safe illustration for ages 5-10, kind and joyful mood, big friendly eyes, rounded shapes, warm magical lighting, high quality, accurate composition, no text, no letters, no watermarks, no distortions. Strictly follow the requested art style below. ";
+            "Child-safe illustration for ages 5-10, kind and joyful mood, big friendly eyes, rounded shapes, warm magical lighting, high quality, accurate composition, no text, no letters, no watermarks, no distortions. STRICT SAFETY RULES: absolutely no violence, no weapons, no blood, no gore, no horror, no scary or evil monsters, no death, no fear, no darkness, no nudity, no sexual content, no drugs, no anything frightening or harmful for kids. Only kind, gentle, positive, wholesome imagery. Strictly follow the requested art style below. ";
 
           const res = await fetch("https://ai.gateway.lovable.dev/v1/chat/completions", {
             method: "POST",

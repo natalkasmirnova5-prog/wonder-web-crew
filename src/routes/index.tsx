@@ -601,6 +601,31 @@ function PromptPractice() {
   const generate = async () => {
     const h = hero.trim() || heroes[Math.floor(Math.random() * heroes.length)];
     const p = place.trim() || places[Math.floor(Math.random() * places.length)];
+    // Мягкая фильтрация: не пускаем страшные/жестокие темы в детскую генерацию
+    const BAD = [
+      "кров", "убий", "смерт", "труп", "монстр", "страшн", "ужас", "жуть", "жутк",
+      "зомби", "демон", "дьявол", "сатан", "пытк", "насил", "оружи", "пистолет",
+      "пулемёт", "пулемет", "автомат", "ружь", "нож", "меч", "топор", "взрыв",
+      "бомб", "война", "войну", "войны", "военн", "battle", "тер акт", "теракт",
+      "ад ", "адский", "огонь смерт", "повес", "утоп", "распят", "горящ ребен",
+      "blood", "kill", "murder", "death", "dead", "corpse", "gore", "scary",
+      "horror", "zombie", "demon", "satan", "torture", "violence", "weapon",
+      "gun", "rifle", "knife", "sword", "axe", "bomb", "war", "nsfw", "sexy",
+      "nude", "naked", "porn",
+    ];
+    const haystack = `${h} ${p} ${style}`.toLowerCase();
+    const isUnsafe = BAD.some((w) => haystack.includes(w));
+    if (isUnsafe) {
+      const kindHero = heroes[Math.floor(Math.random() * heroes.length)];
+      const kindPlace = places[Math.floor(Math.random() * places.length)];
+      setImage(null);
+      setImgLoading(false);
+      setImgError(
+        `Давай придумаем что-нибудь доброе и весёлое 🌈✨ Например: «${kindHero} ${kindPlace}». Я рисую только светлые и радостные картинки для детей 💛`,
+      );
+      setResult(null);
+      return;
+    }
     const styleEn: Record<string, string> = {
       "в стиле Pixar": "Pixar-style 3D cartoon render, soft pastel palette, cinematic lighting",
       "акварель": "watercolor painting, soft washes, paper texture, hand-painted look, gentle brush strokes",
@@ -616,7 +641,7 @@ function PromptPractice() {
     setImgError(null);
     setImgLoading(true);
     try {
-      const apiPrompt = `Art style (MUST follow exactly): ${styleInstr}. Subject: ${h} playing ${p}. ${prompt}`;
+      const apiPrompt = `Art style (MUST follow exactly): ${styleInstr}. Subject: ${h} playing ${p}. ${prompt}\n\nSAFETY: Strictly child-friendly content for ages 5-10. ABSOLUTELY NO violence, weapons, blood, gore, horror, scary monsters, death, fear, darkness, nudity, or anything frightening or harmful. Only kind, joyful, gentle, positive imagery.`;
       const res = await fetch("/api/generate-image", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
