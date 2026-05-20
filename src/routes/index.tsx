@@ -736,7 +736,7 @@ function PromptPractice() {
 
 /* ───────────────────────────── Examples grid ───────────────────────────── */
 
-function ExamplesGrid({ items }: { items: ExampleItem[] }) {
+function ExamplesGrid({ items, playbackRate = 1 }: { items: ExampleItem[]; playbackRate?: number }) {
   const [autoLoop, setAutoLoop] = useState(true);
   const [volume, setVolume] = useState(0.25);
   const [muted, setMuted] = useState(false);
@@ -781,6 +781,7 @@ function ExamplesGrid({ items }: { items: ExampleItem[] }) {
           volume={volume}
           muted={muted}
           onToggleMute={() => setMuted((m) => !m)}
+          playbackRate={playbackRate}
         />
       ))}
       </div>
@@ -794,14 +795,16 @@ function ExampleCard({
   volume,
   muted,
   onToggleMute,
+  playbackRate,
 }: {
   item: ExampleItem;
   autoLoop: boolean;
   volume: number;
   muted: boolean;
   onToggleMute: () => void;
+  playbackRate?: number;
 }) {
-  return <ExampleCardInner item={item} autoLoop={autoLoop} volume={volume} muted={muted} onToggleMute={onToggleMute} />;
+  return <ExampleCardInner item={item} autoLoop={autoLoop} volume={volume} muted={muted} onToggleMute={onToggleMute} playbackRate={playbackRate} />;
 }
 
 function AnimatedImage({ src, alt, motion, decor }: { src: string; alt: string; motion?: string; decor?: "castle" | "space" | "paint" | "wings" }) {
