@@ -567,7 +567,7 @@ function Index() {
             </DialogTitle>
           </DialogHeader>
           <div className="examples-scroll -mr-2 flex-1 overflow-y-auto overflow-x-hidden pr-2">
-            {active && <ExamplesGrid items={active.examples} />}
+            {active && <ExamplesGrid items={active.examples} playbackRate={active.id === "prompt" ? 0.57 : 1} />}
           </div>
         </DialogContent>
       </Dialog>
