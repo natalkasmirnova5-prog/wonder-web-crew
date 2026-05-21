@@ -824,6 +824,31 @@ function PromptPractice() {
         </div>
       )}
 
+      {images.length > 0 && (
+        <div className="mt-4 rounded-2xl bg-white/80 p-3 ring-2 ring-kid-purple/30">
+          <div className="mb-2 text-xs font-bold uppercase tracking-wider text-kid-purple">
+            🖼️ Выбери одну из {images.length} сгенерированных тобой картинок и скачай её
+          </div>
+          <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 md:grid-cols-5">
+            {images.map((it, i) => (
+              <div
+                key={i}
+                className="overflow-hidden rounded-xl bg-white ring-2 ring-kid-pink/30 shadow-sm"
+              >
+                <img src={it.url} alt={it.prompt} className="block aspect-square w-full object-cover" />
+                <button
+                  type="button"
+                  onClick={() => downloadImage(it.url, i)}
+                  className="flex w-full items-center justify-center gap-1.5 bg-gradient-candy px-2 py-1.5 text-[11px] font-bold text-white transition-transform hover:scale-[1.02] active:scale-95"
+                >
+                  <Download className="h-3.5 w-3.5" /> Скачать картинку
+                </button>
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
+
       <div className="mt-5">
         <div className="mb-1 flex items-center justify-between text-xs font-bold text-kid-purple">
           <span>Твой прогресс: {made}/{GOAL} промптов</span>
