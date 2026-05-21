@@ -584,11 +584,14 @@ function Index() {
 
 function PromptPractice() {
   const [hero, setHero] = useState("");
+  const [action, setAction] = useState("");
   const [place, setPlace] = useState("");
   const [style, setStyle] = useState("в стиле Pixar");
+  const [details, setDetails] = useState("");
   const [result, setResult] = useState<string | null>(null);
   const [history, setHistory] = useState<string[]>([]);
   const [image, setImage] = useState<string | null>(null);
+  const [images, setImages] = useState<{ url: string; prompt: string }[]>([]);
   const [imgLoading, setImgLoading] = useState(false);
   const [imgError, setImgError] = useState<string | null>(null);
 
@@ -597,11 +600,21 @@ function PromptPractice() {
   const progress = Math.min(100, Math.round((made / GOAL) * 100));
 
   const heroes = ["котёнок-астронавт", "дракончик", "робот-друг", "единорог", "пингвин-пират"];
+  const actions = ["весело играет", "танцует", "летает", "поёт песенку", "путешествует"];
   const places = ["на радуге", "в волшебном лесу", "на луне", "в городе из мороженого", "под водой"];
+  const detailsList = [
+    "яркие радужные цвета, доброе настроение",
+    "пастельные тона, мягкий свет, уют",
+    "сочные краски, блёстки и звёздочки",
+    "тёплый закат, золотистые искорки",
+    "нежные облака, лёгкий ветерок",
+  ];
 
   const generate = async () => {
     const h = hero.trim() || heroes[Math.floor(Math.random() * heroes.length)];
+    const a = action.trim() || actions[Math.floor(Math.random() * actions.length)];
     const p = place.trim() || places[Math.floor(Math.random() * places.length)];
+    const d = details.trim() || detailsList[Math.floor(Math.random() * detailsList.length)];
     // Мягкая фильтрация: не пускаем страшные/жестокие темы в детскую генерацию
     const BAD = [
       "кров", "убий", "смерт", "труп", "монстр", "страшн", "ужас", "жуть", "жутк",
@@ -614,7 +627,7 @@ function PromptPractice() {
       "gun", "rifle", "knife", "sword", "axe", "bomb", "war", "nsfw", "sexy",
       "nude", "naked", "porn",
     ];
-    const haystack = `${h} ${p} ${style}`.toLowerCase();
+    const haystack = `${h} ${a} ${p} ${style} ${d}`.toLowerCase();
     const isUnsafe = BAD.some((w) => haystack.includes(w));
     if (isUnsafe) {
       const kindHero = heroes[Math.floor(Math.random() * heroes.length)];
@@ -635,26 +648,29 @@ function PromptPractice() {
       "3D-игрушка": "cute 3D toy figurine render, glossy plastic look, studio lighting, soft shadows",
     };
     const styleInstr = styleEn[style] ?? style;
-    const prompt = `Нарисуй ${h}, который весело играет ${p}, ${style}, яркие краски, доброе настроение, большие глаза, мультяшный свет ✨`;
+    const prompt = `Нарисуй ${h}, который ${a} ${p}, ${style}, ${d}, большие добрые глаза, мультяшный свет ✨`;
     setResult(prompt);
     setHistory((prev) => (prev[0] === prompt ? prev : [prompt, ...prev].slice(0, 10)));
     setImage(null);
     setImgError(null);
     setImgLoading(true);
     try {
-      const apiPrompt = `Art style (MUST follow exactly): ${styleInstr}. Subject: ${h} playing ${p}. ${prompt}\n\nSAFETY: Strictly child-friendly content for ages 5-10. ABSOLUTELY NO violence, weapons, blood, gore, horror, scary monsters, death, fear, darkness, nudity, or anything frightening or harmful. Only kind, joyful, gentle, positive imagery.`;
+      const apiPrompt = `Art style (MUST follow exactly): ${styleInstr}. Subject: ${h} ${a} ${p}. Details: ${d}. ${prompt}\n\nSAFETY: Strictly child-friendly content for ages 5-10. ABSOLUTELY NO violence, weapons, blood, gore, horror, scary monsters, death, fear, darkness, nudity, or anything frightening or harmful. Only kind, joyful, gentle, positive imagery.`;
       const res = await fetch("/api/generate-image", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ prompt: apiPrompt }),
       });
-      const data = (await res.json()) as { image?: string; error?: string };
+      const data = (await res
+        .json()
+        .catch(() => ({}))) as { image?: string; error?: string };
       if (!res.ok || !data.image) {
         if (res.status === 429) setImgError("Слишком много запросов. Попробуй через минуту 💫");
         else if (res.status === 402) setImgError("Закончились кредиты. Добавь их в настройках ✨");
-        else setImgError(data.error || "Не получилось нарисовать. Попробуй ещё раз 🎨");
+        else setImgError("Не получилось нарисовать. Попробуй ещё раз 🎨");
       } else {
         setImage(data.image);
+        setImages((prev) => [{ url: data.image as string, prompt }, ...prev].slice(0, 5));
       }
     } catch {
       setImgError("Сеть подвела. Попробуй ещё раз 🌈");
@@ -665,7 +681,26 @@ function PromptPractice() {
 
   const surprise = () => {
     setHero(heroes[Math.floor(Math.random() * heroes.length)]);
+    setAction(actions[Math.floor(Math.random() * actions.length)]);
     setPlace(places[Math.floor(Math.random() * places.length)]);
+    setDetails(detailsList[Math.floor(Math.random() * detailsList.length)]);
+  };
+
+  const downloadImage = async (url: string, idx: number) => {
+    try {
+      const resp = await fetch(url);
+      const blob = await resp.blob();
+      const href = URL.createObjectURL(blob);
+      const link = document.createElement("a");
+      link.href = href;
+      link.download = `moya-kartinka-${idx + 1}.png`;
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      setTimeout(() => URL.revokeObjectURL(href), 1000);
+    } catch {
+      setImgError("Не получилось скачать. Попробуй ещё раз 💾");
+    }
   };
 
   return (
