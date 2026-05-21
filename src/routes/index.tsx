@@ -724,12 +724,30 @@ function PromptPractice() {
           />
         </label>
         <label className="block">
+          <span className="text-xs font-bold uppercase tracking-wider text-kid-purple">Что делает</span>
+          <input
+            value={action}
+            onChange={(e) => setAction(e.target.value)}
+            placeholder="например: танцует"
+            className="mt-1 w-full rounded-xl border-2 border-kid-yellow/40 bg-white px-3 py-2 text-sm outline-none focus:border-kid-yellow"
+          />
+        </label>
+        <label className="block">
           <span className="text-xs font-bold uppercase tracking-wider text-kid-purple">Место</span>
           <input
             value={place}
             onChange={(e) => setPlace(e.target.value)}
             placeholder="например: на радуге"
             className="mt-1 w-full rounded-xl border-2 border-kid-blue/30 bg-white px-3 py-2 text-sm outline-none focus:border-kid-blue"
+          />
+        </label>
+        <label className="block">
+          <span className="text-xs font-bold uppercase tracking-wider text-kid-purple">Детали (цвета, настроение)</span>
+          <input
+            value={details}
+            onChange={(e) => setDetails(e.target.value)}
+            placeholder="например: яркие радужные цвета, блёстки"
+            className="mt-1 w-full rounded-xl border-2 border-kid-purple/30 bg-white px-3 py-2 text-sm outline-none focus:border-kid-purple"
           />
         </label>
       </div>
