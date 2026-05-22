@@ -592,6 +592,7 @@ function PromptPractice() {
   const [history, setHistory] = useState<string[]>([]);
   const [image, setImage] = useState<string | null>(null);
   const [images, setImages] = useState<{ url: string; prompt: string }[]>([]);
+  const [selectedImg, setSelectedImg] = useState<number | null>(null);
   const [imgLoading, setImgLoading] = useState(false);
   const [imgError, setImgError] = useState<string | null>(null);
 
