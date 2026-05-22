@@ -612,6 +612,7 @@ function PromptPractice() {
   ];
 
   const generate = async () => {
+    if (imgLoading) return;
     const h = hero.trim() || heroes[Math.floor(Math.random() * heroes.length)];
     const a = action.trim() || actions[Math.floor(Math.random() * actions.length)];
     const p = place.trim() || places[Math.floor(Math.random() * places.length)];
@@ -776,9 +777,10 @@ function PromptPractice() {
       <div className="mt-4 flex flex-wrap gap-2">
         <button
           onClick={generate}
-          className="inline-flex items-center gap-2 rounded-2xl bg-gradient-candy px-5 py-2.5 text-sm font-bold text-white shadow-pop transition-transform hover:scale-105 active:scale-95"
+          disabled={imgLoading}
+          className="inline-flex items-center gap-2 rounded-2xl bg-gradient-candy px-5 py-2.5 text-sm font-bold text-white shadow-pop transition-transform hover:scale-105 active:scale-95 disabled:cursor-not-allowed disabled:opacity-60 disabled:hover:scale-100"
         >
-          <Sparkles className="h-4 w-4" /> Создать промпт
+          <Sparkles className="h-4 w-4" /> {imgLoading ? "Рисую…" : "Создать промпт"}
         </button>
         <button
           onClick={surprise}
