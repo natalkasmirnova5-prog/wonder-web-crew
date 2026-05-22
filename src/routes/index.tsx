@@ -828,25 +828,40 @@ function PromptPractice() {
       {images.length > 0 && (
         <div className="mt-4 rounded-2xl bg-white/80 p-3 ring-2 ring-kid-purple/30">
           <div className="mb-2 text-xs font-bold uppercase tracking-wider text-kid-purple">
-            🖼️ Выбери одну из {images.length} сгенерированных тобой картинок и скачай её
+            🖼️ {images.length < 5
+              ? `Сгенерировано ${images.length} из 5 картинок — продолжай ✨`
+              : "Выбери одну из 5 сгенерированных тобой картинок и скачай её"}
           </div>
           <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 md:grid-cols-5">
             {images.map((it, i) => (
               <div
                 key={i}
-                className="overflow-hidden rounded-xl bg-white ring-2 ring-kid-pink/30 shadow-sm"
+                onClick={() => images.length >= 5 && setSelectedImg(i)}
+                className={`overflow-hidden rounded-xl bg-white shadow-sm transition ${
+                  images.length >= 5 ? "cursor-pointer" : ""
+                } ${
+                  selectedImg === i && images.length >= 5
+                    ? "ring-4 ring-kid-purple scale-[1.03]"
+                    : "ring-2 ring-kid-pink/30"
+                }`}
               >
                 <img src={it.url} alt={it.prompt} className="block aspect-square w-full object-cover" />
-                <button
-                  type="button"
-                  onClick={() => downloadImage(it.url, i)}
-                  className="flex w-full items-center justify-center gap-1.5 bg-gradient-candy px-2 py-1.5 text-[11px] font-bold text-white transition-transform hover:scale-[1.02] active:scale-95"
-                >
-                  <Download className="h-3.5 w-3.5" /> Скачать картинку
-                </button>
               </div>
             ))}
           </div>
+          {images.length >= 5 && (
+            <button
+              type="button"
+              disabled={selectedImg === null}
+              onClick={() =>
+                selectedImg !== null && downloadImage(images[selectedImg].url, selectedImg)
+              }
+              className="mt-3 inline-flex w-full items-center justify-center gap-2 rounded-2xl bg-gradient-candy px-5 py-2.5 text-sm font-bold text-white shadow-pop transition-transform hover:scale-[1.02] active:scale-95 disabled:cursor-not-allowed disabled:opacity-50 disabled:hover:scale-100"
+            >
+              <Download className="h-4 w-4" />
+              {selectedImg === null ? "Выбери картинку 👆" : "Скачать выбранную картинку"}
+            </button>
+          )}
         </div>
       )}
 
